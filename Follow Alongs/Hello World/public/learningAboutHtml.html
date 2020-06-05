@@ -26,5 +26,12 @@
     <span>Spans are on the same line</span>
     <span>since their <b>display</b> property is 'inline'.</span>
     <p class="red-text" style="font-size: 2em;">But with CSS you can do anything!</p>
+    <button id="myButton">Press Me!</button>
+    <script>
+      console.log("Hello World!");
+      document.getElementById("myButton").addEventListener("click", () => {
+        alert("JavaScript without jQuery still works!");
+      } );
+    </script>
   </body>
 </html>
