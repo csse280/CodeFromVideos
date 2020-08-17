@@ -3,6 +3,23 @@
 
 <head>
   <title>Hello World</title>
+  <style>
+    div {
+      border: 5px double blue;
+      background-color: purple;
+      color: white;
+    }
+    .test-class {
+      color: red;
+    }
+    #myButton {
+      padding: 30px;
+      font-size: 2em;
+    }
+    /* span {
+      display: block;
+    } */
+  </style>
 </head>
 
 <body>
@@ -14,13 +31,13 @@
   <br>
   <br>
   <span>Span is the next most common HTML tag</span>
-  <span>A span is the same line</span>
+  <span class="test-class">A span is the same line</span>
   <span>because the display property is 'inline'</span>
   <br><br><br>
-  <p>
+  <p class="test-class" style="font-size: 3em;">
     But with CSS you can do anything.
   </p>
-  <button>
+  <button id="myButton">
     Press Me!
   </button>
 </body>
