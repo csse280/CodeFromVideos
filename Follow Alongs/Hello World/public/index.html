@@ -40,6 +40,18 @@
   <button id="myButton">
     Press Me!
   </button>
+  <script>
+    console.log("Hello World");
+    var myButtonElement = document.querySelector("#myButton");
+    console.log(myButtonElement);
+    console.log(myButtonElement.id);
+    console.log(myButtonElement.classList);
+    console.log(myButtonElement.onclick);
+    myButtonElement.onclick = (event) => {
+      console.log("You pressed the button!");
+      alert("This is important!");
+    };
+  </script>
 </body>
 
 </html>
