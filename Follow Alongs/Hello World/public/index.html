@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <title>Hello World</title>
   <style>
     div {
       border: 5px double blue;
-      background-color: purple;
-      color: white;
     }
     .test-class {
       color: red;
@@ -43,6 +40,9 @@
   <script>
     console.log("Hello World");
     var myButtonElement = document.querySelector("#myButton");
+    myButtonElement.addEventListener("click", (event) => {
+      alert("This is important!");
+    })
     console.log(myButtonElement);
     console.log(myButtonElement.id);
     console.log(myButtonElement.classList);
