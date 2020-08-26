@@ -10,3 +10,9 @@ body {
 .page-container {
     margin-top: 75px;
 }
+
+.no-gutters>.col,
+.no-gutters>[class*=col-] {
+    padding-right: 2px;
+    padding-left: 2px;
+}
