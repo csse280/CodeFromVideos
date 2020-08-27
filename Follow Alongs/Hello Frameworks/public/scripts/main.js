@@ -17,29 +17,25 @@ rhit.main = function () {
 		button.onclick = (event) => {
 			const dataAmount = parseInt(button.dataset.amount);
 			const dataIsMultiplication = button.dataset.isMultiplication == "true";
-			console.log(`Amount: ${dataAmount} isMult: ${dataIsMultiplication}`);
-			console.log(`Amount: ${typeof(dataAmount)} isMult: ${typeof(dataIsMultiplication)}`);
-
-			if (dataIsMultiplication) {
-				console.log("This IS Truthy.  Use multiplication.");
-			} else {
-				console.log("Not multiplication.");
-			}
-
-
+			// console.log(`Amount: ${dataAmount} isMult: ${dataIsMultiplication}`);
+			// console.log(`Amount: ${typeof(dataAmount)} isMult: ${typeof(dataIsMultiplication)}`);
+			rhit.updateCounter(dataAmount, dataIsMultiplication);
 		};
 	}
-
 	// buttons.forEach((button) => {
 	// 	button.onclick = (event) => {
 	// 		console.log(`You pressed`, button);
 	// 	};
 	// });
-
 };
 
-rhit.updateCounter = function () {
-	
+rhit.updateCounter = function (amount, isMultiplication) {
+	if (isMultiplication) {
+		rhit.counter = rhit.counter * amount;
+	} else {
+		rhit.counter = rhit.counter + amount;
+	}
+	document.querySelector("#counterText").innerHTML = `Count = ${rhit.counter}`;
 };
 
 rhit.main();
