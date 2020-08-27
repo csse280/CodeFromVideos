@@ -16,3 +16,9 @@ body {
     padding-right: 2px;
     padding-left: 2px;
 }
+
+#counterText {
+    font-size: 3em;
+    text-align: center;
+    margin-top: 40px;
+}
