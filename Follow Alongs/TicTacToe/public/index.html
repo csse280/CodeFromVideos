@@ -15,14 +15,39 @@
     <a class="navbar-brand" href="#">Tic-Tac-Toe</a>
   </nav>
   <div id="mainPage" class="container page-container">
-
     <h1 id="gameStateText" class="text-center">X's Turn</h1>
+
+    <div class="row justify-content-center">
+      <div id="gameBoard" class="col-10 col-md-6">
+        <div class="row">
+          <div class="col square b-right b-bottom">X</div>
+          <div class="col square b-left b-right b-bottom">X</div>
+          <div class="col square b-left b-bottom">X</div>
+        </div>
+        <div class="row">
+          <div class="col square b-top b-right b-bottom">X</div>
+          <div class="col square b-left b-top b-right b-bottom">X</div>
+          <div class="col square b-left b-top b-bottom">X</div>
+        </div>
+        <div class="row">
+          <div class="col b-right b-top square">X</div>
+          <div class="col b-left b-right b-top square">X</div>
+          <div class="col b-left b-top square">X</div>
+        </div>
+        <div class="row">
+          <button type="button" class="btn" id="newGameButton">New Game</button>
+        </div>
+      </div>
+
+    </div>
 
   </div>
   <script src="scripts/jquery.min.js"></script>
   <script src="scripts/popper.js"></script>
   <script src="scripts/bootstrap-material-design.js"></script>
-  <script>$("body").bootstrapMaterialDesign();</script>
+  <script>
+    $("body").bootstrapMaterialDesign();
+  </script>
   <script src="scripts/main.js"></script>
 </body>
 
