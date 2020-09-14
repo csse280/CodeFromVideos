@@ -1,36 +1,36 @@
-/**
- * @fileoverview
- * Provides the JavaScript interactions for all pages.
- *
- * @author 
- * PUT_YOUR_NAME_HERE
- */
-
-/** namespace. */
 var rhit = rhit || {};
 
-/** globals */
-rhit.variableName = "";
+rhit.PageController = class {
+	constructor() {
+		// Enable the onclick listeners
+	}
 
-/** function and class syntax examples */
-rhit.functionName = function () {
-	/** function body */
+	updateView() {
+
+	}
 };
 
-rhit.ClassName = class {
+rhit.Game = class {
 	constructor() {
+		// TODO: Make instance variables
+	}
+
+	pressedButtonAtIndex(buttonIndex) {
 
 	}
 
-	methodName() {
-
+	getMarkAtIndex(buttonIndex) {
+		return "X"; // TODO: Implement
 	}
-}
 
-/* Main */
-/** function and class syntax examples */
+	getState() {
+		return "X's Turn"; // TODO: Implement
+	}
+};
+
 rhit.main = function () {
 	console.log("Ready");
+	new rhit.PageController();
 };
 
 rhit.main();
