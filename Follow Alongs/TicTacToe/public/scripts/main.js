@@ -3,6 +3,16 @@ var rhit = rhit || {};
 rhit.PageController = class {
 	constructor() {
 		this.game = new rhit.Game();
+
+		const squares = document.querySelectorAll(".square");
+		for (const square of squares) {
+			square.onclick = (event) => {
+				const buttonIndex = parseInt(square.dataset.buttonIndex);
+				this.game.pressedButtonAtIndex(buttonIndex);
+			};
+		}
+
+
 	}
 
 	updateView() {
@@ -37,6 +47,8 @@ rhit.Game = class {
 	pressedButtonAtIndex(buttonIndex) {
 		// temp test
 		this.board[buttonIndex] = rhit.Game.Mark.X;
+		console.log("Clicked", buttonIndex);
+		
 	}
 
 	getMarkAtIndex(buttonIndex) {
