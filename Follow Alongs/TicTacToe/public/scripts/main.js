@@ -53,8 +53,28 @@ rhit.Game = class {
 	}
 
 	pressedButtonAtIndex(buttonIndex) {
-		// temp test
-		this.board[buttonIndex] = rhit.Game.Mark.X;
+		if (this.state == rhit.Game.State.X_WIN ||
+			  this.state == rhit.Game.State.O_WIN ||
+			  this.state == rhit.Game.State.TIE) {
+					console.log("The game is over");
+			return;
+		}
+		if (this.board[buttonIndex] != rhit.Game.Mark.NONE) {
+			console.log("The square is not empty");
+			return;
+		}
+		if (this.state == rhit.Game.State.X_TURN) {
+			this.board[buttonIndex] = rhit.Game.Mark.X;
+			this.state = rhit.Game.State.O_TURN;
+		} else {
+			this.board[buttonIndex] = rhit.Game.Mark.O;
+			this.state = rhit.Game.State.X_TURN;
+		}
+		this._checkForGameOver();
+	}
+	
+	_checkForGameOver() {
+
 	}
 
 	getMarkAtIndex(buttonIndex) {
