@@ -31,6 +31,23 @@ rhit.ClassName = class {
 /** function and class syntax examples */
 rhit.main = function () {
 	console.log("Ready");
+
+
+	// Temp code for Read and Add
+	// const ref = firebase.firestore().collection("MovieQuotes");
+	// ref.onSnapshot((querySnapshot) => {
+	// 	querySnapshot.forEach((doc) => {
+	// 		console.log(doc.data());
+	// 	});
+	// });
+
+	// ref.add({
+	// 	quote: "My second test",
+	// 	movie: "My second movie",
+	// 	lastTouched: firebase.firestore.Timestamp.now(),
+	// });
+
+
 };
 
 rhit.main();
