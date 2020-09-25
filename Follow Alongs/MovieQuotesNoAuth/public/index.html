@@ -18,13 +18,37 @@
 
 
   </div>
-  <button id="fab" type="button" class="btn bmd-btn-fab">
+  <button id="fab" type="button" class="btn bmd-btn-fab" data-toggle="modal" data-target="#addQuoteDialog">
     <i class="material-icons">add</i>
   </button>
+
+
+  <!-- Modals -->
+  <div class="modal fade" id="addQuoteDialog" tabindex="-1" role="dialog" aria-labelledby="Add quote dialog"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Movie Quote</h5>
+        </div>
+        <div class="modal-body">
+          ... form goes here ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+          <button type="button" class="btn btn-primary">CREATE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <script src="scripts/jquery.min.js"></script>
   <script src="scripts/popper.js"></script>
   <script src="scripts/bootstrap-material-design.js"></script>
-  <script>$("body").bootstrapMaterialDesign();</script>
+  <script>
+    $("body").bootstrapMaterialDesign();
+  </script>
   <script src="/__/firebase/7.18.0/firebase-app.js"></script>
   <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
   <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
