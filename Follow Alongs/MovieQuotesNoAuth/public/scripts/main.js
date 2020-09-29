@@ -171,6 +171,9 @@ rhit.main = function () {
 	if (document.querySelector("#detailPage")) {
 		console.log("You are on the detail page.");
 
+		const movieQuoteId = rhit.storage.getMovieQuoteId();
+		console.log(`Detail page for ${movieQuoteId}`);
+
 	}
 
 	// Temp code for Read and Add
