@@ -12,12 +12,20 @@ rhit.ListPageController = class {
 
 		// document.querySelector("#submitAddQuote").onclick = (event) => {
 		// };
-
-
 		document.querySelector("#submitAddQuote").addEventListener("click", (event) => {
 			const quote = document.querySelector("#inputQuote").value;
 			const movie = document.querySelector("#inputMovie").value;
 			rhit.fbMovieQuotesManager.add(quote, movie);
+		});
+
+		$("#addQuoteDialog").on("show.bs.modal", (event) => {
+			// Pre animation
+			document.querySelector("#inputQuote").value = "";
+			document.querySelector("#inputMovie").value = "";
+		});
+		$("#addQuoteDialog").on("shown.bs.modal", (event) => {
+			// Post animation
+			document.querySelector("#inputQuote").focus();
 		});
 
 	}
