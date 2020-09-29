@@ -53,8 +53,9 @@ rhit.ListPageController = class {
 			const mq = rhit.fbMovieQuotesManager.getMovieQuoteAtIndex(i);
 			const newCard = this._createCard(mq);
 			newCard.onclick = (event) => {
-				console.log(`You clicked on ${mq.id}`);
+				//console.log(`You clicked on ${mq.id}`);
 				rhit.storage.setMovieQuoteId(mq.id);
+				window.location.href = "/moviequote.html";
 			};
 			newList.appendChild(newCard);
 		}
