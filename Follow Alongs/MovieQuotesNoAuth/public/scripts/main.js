@@ -4,11 +4,12 @@ rhit.FB_COLLECTION_MOVIEQUOTE = "MovieQuotes";
 rhit.FB_KEY_QUOTE = "quote";
 rhit.FB_KEY_MOVIE = "movie";
 rhit.FB_KEY_LAST_TOUCHED = "lastTouched";
-rhit.fbMovieQuotesManager = null;
+rhit.fbMovieQuoteManager = null;
 
 
 rhit.ListPageController = class {
 	constructor() {
+		console.log("created ListPageController");
 	}
 	updateList() {}
 }
@@ -46,7 +47,7 @@ rhit.main = function () {
 	console.log("Ready");
 	if (document.querySelector("#listPage")) {
 		console.log("You are on the list page.");
-		rhit.fbMovieQuotesManager = new rhit.FbMovieQuotesManager();
+		rhit.fbMovieQuoteManager = new rhit.FbMovieQuotesManager();
 		new rhit.ListPageController();
 	}
 	if (document.querySelector("#detailPage")) {
