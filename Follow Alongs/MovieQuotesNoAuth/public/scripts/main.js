@@ -4,12 +4,22 @@ rhit.FB_COLLECTION_MOVIEQUOTE = "MovieQuotes";
 rhit.FB_KEY_QUOTE = "quote";
 rhit.FB_KEY_MOVIE = "movie";
 rhit.FB_KEY_LAST_TOUCHED = "lastTouched";
-rhit.fbMovieQuoteManager = null;
+rhit.fbMovieQuotesManager = null;
 
 
 rhit.ListPageController = class {
 	constructor() {
-		console.log("created ListPageController");
+
+		// document.querySelector("#submitAddQuote").onclick = (event) => {
+		// };
+
+
+		document.querySelector("#submitAddQuote").addEventListener("click", (event) => {
+			const quote = document.querySelector("#inputQuote").value;
+			const movie = document.querySelector("#inputMovie").value;
+			rhit.fbMovieQuotesManager.add(quote, movie);
+		});
+
 	}
 	updateList() {}
 }
@@ -30,6 +40,21 @@ rhit.FbMovieQuotesManager = class {
 	}
 
 	add(quote, movie) {
+		console.log(`add quote ${quote}`);
+		console.log(`add movie ${movie}`);
+
+		// Add a new document with a generated id.
+		this._ref.add({
+				[rhit.FB_KEY_QUOTE]: quote,
+				[rhit.FB_KEY_MOVIE]: movie,
+				[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
+			})
+			.then(function (docRef) {
+				console.log("Document written with ID: ", docRef.id);
+			})
+			.catch(function (error) {
+				console.error("Error adding document: ", error);
+			});
 	}
 
 	beginListening(changeListener) {}
@@ -47,7 +72,7 @@ rhit.main = function () {
 	console.log("Ready");
 	if (document.querySelector("#listPage")) {
 		console.log("You are on the list page.");
-		rhit.fbMovieQuoteManager = new rhit.FbMovieQuotesManager();
+		rhit.fbMovieQuotesManager = new rhit.FbMovieQuotesManager();
 		new rhit.ListPageController();
 	}
 	if (document.querySelector("#detailPage")) {
