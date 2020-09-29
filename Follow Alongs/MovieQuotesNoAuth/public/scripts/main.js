@@ -6,6 +6,13 @@ rhit.FB_KEY_MOVIE = "movie";
 rhit.FB_KEY_LAST_TOUCHED = "lastTouched";
 rhit.fbMovieQuotesManager = null;
 
+// From: https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro/35385518#35385518
+function htmlToElement(html) {
+	var template = document.createElement('template');
+	html = html.trim();
+	template.innerHTML = html;
+	return template.content.firstChild;
+}
 
 rhit.ListPageController = class {
 	constructor() {
@@ -37,6 +44,18 @@ rhit.ListPageController = class {
 		console.log("I need to update the list on the page!");
 		console.log(`Num quotes = ${rhit.fbMovieQuotesManager.length}`);
 		console.log("Example quote = ", rhit.fbMovieQuotesManager.getMovieQuoteAtIndex(0));
+
+		// Make a new quoteListContainer
+		const newList = htmlToElement('<div id="quoteListContainer"></div>');
+		// Fill the quoteListContainer with quote cards using a loop
+
+
+		// Remove the old quoteListContainer
+		const oldList = document.querySelector("#quoteListContainer");
+		oldList.removeAttribute("id");
+		oldList.hidden = true;
+		// Put in the new quoteListContainer
+		oldList.parentElement.appendChild(newList);
 	}
 }
 
