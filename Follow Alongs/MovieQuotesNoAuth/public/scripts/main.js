@@ -5,6 +5,7 @@ rhit.FB_KEY_QUOTE = "quote";
 rhit.FB_KEY_MOVIE = "movie";
 rhit.FB_KEY_LAST_TOUCHED = "lastTouched";
 rhit.fbMovieQuotesManager = null;
+rhit.fbSingleQuoteManager = null;
 
 // From: https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro/35385518#35385518
 function htmlToElement(html) {
@@ -90,7 +91,6 @@ rhit.MovieQuote = class {
 
 rhit.FbMovieQuotesManager = class {
 	constructor() {
-		console.log("created FbMovieQuotesManager");
 		this._documentSnapshots = [];
 		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_MOVIEQUOTE);
 		this._unsubscribe = null;
@@ -144,10 +144,35 @@ rhit.FbMovieQuotesManager = class {
 	}
 }
 
+rhit.DetailPageController = class {
+	constructor() {
+	}
+	updateView() {}
+}
+
+rhit.FbSingleQuoteManager = class {
+	constructor(movieQuoteId) {
+		this._documentSnapshot = {};
+		this._unsubscribe = null;
+		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_MOVIEQUOTE).doc(movieQuoteId);
+	}
+	beginListening(changeListener) {}
+
+	stopListening() {
+		this._unsubscribe();
+	}
+
+	update(quote, movie) {}
+	delete() {}
+}
+
+
+
+
 rhit.storage = rhit.storage || {};
 rhit.storage.MOVIEQUOTE_ID_KEY = "movieQuoteId";
 
-rhit.storage.getMovieQuoteId = function() {
+rhit.storage.getMovieQuoteId = function () {
 	const mqId = sessionStorage.getItem(rhit.storage.MOVIEQUOTE_ID_KEY);
 	if (!mqId) {
 		console.log("No movie quote id in sessionStorage!");
@@ -155,7 +180,7 @@ rhit.storage.getMovieQuoteId = function() {
 	return mqId;
 };
 
-rhit.storage.setMovieQuoteId = function(movieQuoteId) {
+rhit.storage.setMovieQuoteId = function (movieQuoteId) {
 	sessionStorage.setItem(rhit.storage.MOVIEQUOTE_ID_KEY, movieQuoteId);
 };
 
@@ -170,10 +195,12 @@ rhit.main = function () {
 	}
 	if (document.querySelector("#detailPage")) {
 		console.log("You are on the detail page.");
-
 		const movieQuoteId = rhit.storage.getMovieQuoteId();
-		console.log(`Detail page for ${movieQuoteId}`);
-
+		if (!movieQuoteId) {
+			window.location.href = "/";
+		}
+		rhit.fbSingleQuoteManager = new rhit.FbSingleQuoteManager(movieQuoteId);
+		new rhit.DetailPageController();
 	}
 
 	// Temp code for Read and Add
