@@ -146,8 +146,12 @@ rhit.FbMovieQuotesManager = class {
 
 rhit.DetailPageController = class {
 	constructor() {
+		rhit.fbSingleQuoteManager.beginListening(this.updateView.bind(this));
 	}
-	updateView() {}
+	updateView() {
+		document.querySelector("#cardQuote").innerHTML = rhit.fbSingleQuoteManager.quote;
+		document.querySelector("#cardMovie").innerHTML = rhit.fbSingleQuoteManager.movie;		
+	}
 }
 
 rhit.FbSingleQuoteManager = class {
@@ -156,7 +160,20 @@ rhit.FbSingleQuoteManager = class {
 		this._unsubscribe = null;
 		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_MOVIEQUOTE).doc(movieQuoteId);
 	}
-	beginListening(changeListener) {}
+
+	beginListening(changeListener) {
+		this._unsubscribe = this._ref.onSnapshot((doc) => {
+			if (doc.exists) {
+				console.log("Document data:", doc.data());
+				this._documentSnapshot = doc;
+				changeListener();
+			} else {
+				// doc.data() will be undefined in this case
+				console.log("No such document!");
+				//window.location.href = "/";
+			}
+		});
+	}
 
 	stopListening() {
 		this._unsubscribe();
@@ -164,6 +181,14 @@ rhit.FbSingleQuoteManager = class {
 
 	update(quote, movie) {}
 	delete() {}
+
+	get quote() {
+		return this._documentSnapshot.get(rhit.FB_KEY_QUOTE);
+	}
+
+	get movie() {
+		return this._documentSnapshot.get(rhit.FB_KEY_MOVIE);
+	}
 }
 
 
