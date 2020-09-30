@@ -162,11 +162,21 @@ rhit.DetailPageController = class {
 			// Post animation
 			document.querySelector("#inputQuote").focus();
 		});
+
+		document.querySelector("#submitDeleteQuote").addEventListener("click", (event) => {
+			rhit.fbSingleQuoteManager.delete().then(function () {
+				console.log("Document successfully deleted!");
+				window.location.href = "/";
+			}).catch(function (error) {
+				console.error("Error removing document: ", error);
+			});
+		});
+
 		rhit.fbSingleQuoteManager.beginListening(this.updateView.bind(this));
 	}
 	updateView() {
 		document.querySelector("#cardQuote").innerHTML = rhit.fbSingleQuoteManager.quote;
-		document.querySelector("#cardMovie").innerHTML = rhit.fbSingleQuoteManager.movie;		
+		document.querySelector("#cardMovie").innerHTML = rhit.fbSingleQuoteManager.movie;
 	}
 }
 
@@ -197,20 +207,22 @@ rhit.FbSingleQuoteManager = class {
 
 	update(quote, movie) {
 		this._ref.update({
-			[rhit.FB_KEY_QUOTE]: quote,
-			[rhit.FB_KEY_MOVIE]: movie,
-			[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
-		})
-		.then(() => {
+				[rhit.FB_KEY_QUOTE]: quote,
+				[rhit.FB_KEY_MOVIE]: movie,
+				[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
+			})
+			.then(() => {
 				console.log("Document successfully updated!");
-		})
-		.catch(function(error) {
+			})
+			.catch(function (error) {
 				// The document probably doesn't exist.
 				console.error("Error updating document: ", error);
-		});
+			});
 	}
 
-	delete() {}
+	delete() {
+		return this._ref.delete();
+	}
 
 	get quote() {
 		return this._documentSnapshot.get(rhit.FB_KEY_QUOTE);
