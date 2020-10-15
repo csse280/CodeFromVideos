@@ -6,6 +6,7 @@ rhit.FB_KEY_MOVIE = "movie";
 rhit.FB_KEY_LAST_TOUCHED = "lastTouched";
 rhit.fbMovieQuotesManager = null;
 rhit.fbSingleQuoteManager = null;
+rhit.fbAuthManager = null;
 
 // From: https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro/35385518#35385518
 function htmlToElement(html) {
@@ -249,10 +250,29 @@ rhit.FbSingleQuoteManager = class {
 // 	sessionStorage.setItem(rhit.storage.MOVIEQUOTE_ID_KEY, movieQuoteId);
 // };
 
+rhit.LoginPageController = class {
+	constructor() {
+		console.log("You have made the Login Page Controller");
+	}
+}
+
+rhit.FbAuthManager = class {
+	constructor() {
+		this._user = null;
+		console.log("You have made the Auth Manager");
+	}
+	beginListening(changeListener) {}
+	signIn() {}
+	signOut() {}
+	get isSignedIn() {}
+	get uid() {}
+}
+
 /* Main */
-/** function and class syntax examples */
 rhit.main = function () {
 	console.log("Ready");
+	rhit.fbAuthManager = new rhit.FbAuthManager();
+
 	if (document.querySelector("#listPage")) {
 		console.log("You are on the list page.");
 		rhit.fbMovieQuotesManager = new rhit.FbMovieQuotesManager();
@@ -272,6 +292,11 @@ rhit.main = function () {
 		}
 		rhit.fbSingleQuoteManager = new rhit.FbSingleQuoteManager(movieQuoteId);
 		new rhit.DetailPageController();
+	}
+
+	if (document.querySelector("#loginPage")) {
+		console.log("You are on the login page.");
+		new rhit.LoginPageController();
 	}
 
 	// Temp code for Read and Add
