@@ -40,3 +40,19 @@ body {
 .dropdown-menu-right {
     left: -128px;
 }
+
+#roseLogo {
+    max-width: 320px;
+    margin: 20px auto;
+    display: block;
+}
+
+#rosefireButton {
+    display: block;
+    margin: 60px auto;
+    color: white;
+    background: #800000;
+    font-size: 1.1em;
+    padding: 10px 30px;
+    border-radius: 5px;
+}
