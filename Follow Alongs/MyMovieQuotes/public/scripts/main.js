@@ -19,6 +19,17 @@ function htmlToElement(html) {
 rhit.ListPageController = class {
 	constructor() {
 
+		document.querySelector("#menuShowAllQuotes").addEventListener("click", (event) => {
+			window.location.href = "/list.html";
+		});
+		document.querySelector("#menuShowMyQuotes").addEventListener("click", (event) => {
+			window.location.href = `/list.html?uid=${rhit.fbAuthManager.uid}`;
+		});
+		document.querySelector("#menuSignOut").addEventListener("click", (event) => {
+			rhit.fbAuthManager.signOut();
+		});
+
+
 		// document.querySelector("#submitAddQuote").onclick = (event) => {
 		// };
 		document.querySelector("#submitAddQuote").addEventListener("click", (event) => {
@@ -39,7 +50,6 @@ rhit.ListPageController = class {
 
 		// Start listening!
 		rhit.fbMovieQuotesManager.beginListening(this.updateList.bind(this));
-
 	}
 
 
