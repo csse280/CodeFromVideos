@@ -252,26 +252,51 @@ rhit.FbSingleQuoteManager = class {
 
 rhit.LoginPageController = class {
 	constructor() {
-		console.log("You have made the Login Page Controller");
+		document.querySelector("#rosefireButton").onclick = (event) => {
+			rhit.fbAuthManager.signIn();
+		};
 	}
 }
 
 rhit.FbAuthManager = class {
 	constructor() {
 		this._user = null;
-		console.log("You have made the Auth Manager");
 	}
-	beginListening(changeListener) {}
-	signIn() {}
-	signOut() {}
-	get isSignedIn() {}
-	get uid() {}
+
+	beginListening(changeListener) {
+		firebase.auth().onAuthStateChanged((user) => {
+			this._user = user;
+			changeListener();
+		});
+	}
+
+	signIn() {
+		console.log("TODO: Sign in using Rosefire");
+	}
+
+	signOut() {
+		firebase.auth().signOut().catch((error) => {
+			console.log("Sign out error");
+		});
+	}
+
+	get isSignedIn() {
+		return !!this._user;
+	}
+
+	get uid() {
+		return this._user.uid;
+	}
 }
 
 /* Main */
 rhit.main = function () {
 	console.log("Ready");
 	rhit.fbAuthManager = new rhit.FbAuthManager();
+	rhit.fbAuthManager.beginListening(() => {
+		console.log("auth change callback fired.  TODO: check for redirect and init the page");
+		console.log("isSignedIn = ", rhit.fbAuthManager.isSignedIn);
+	});
 
 	if (document.querySelector("#listPage")) {
 		console.log("You are on the list page.");
