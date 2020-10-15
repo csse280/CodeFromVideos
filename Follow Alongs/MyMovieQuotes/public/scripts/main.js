@@ -271,7 +271,24 @@ rhit.FbAuthManager = class {
 	}
 
 	signIn() {
-		console.log("TODO: Sign in using Rosefire");
+		console.log("Sign in using Rosefire");
+		Rosefire.signIn("eb20b5be-d31d-40fd-b4b7-e50dee8c5bf2", (err, rfUser) => {
+			if (err) {
+				console.log("Rosefire error!", err);
+				return;
+			}
+			console.log("Rosefire success!", rfUser);
+			firebase.auth().signInWithCustomToken(rfUser.token).catch((error) => {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				if (errorCode === 'auth/invalid-custom-token') {
+					alert('The token you provided is not valid.');
+				} else {
+					console.error("Custom auth error", errorCode, errorMessage);
+				}
+			});
+		});
+
 	}
 
 	signOut() {
