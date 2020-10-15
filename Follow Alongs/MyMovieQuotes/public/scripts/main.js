@@ -306,15 +306,16 @@ rhit.FbAuthManager = class {
 	}
 }
 
-/* Main */
-rhit.main = function () {
-	console.log("Ready");
-	rhit.fbAuthManager = new rhit.FbAuthManager();
-	rhit.fbAuthManager.beginListening(() => {
-		console.log("auth change callback fired.  TODO: check for redirect and init the page");
-		console.log("isSignedIn = ", rhit.fbAuthManager.isSignedIn);
-	});
+rhit.checkForRedirects = function() {
+	if (document.querySelector("#loginPage") && rhit.fbAuthManager.isSignedIn) {
+		window.location.href = "/list.html";
+	}
+	if (!document.querySelector("#loginPage") && !rhit.fbAuthManager.isSignedIn) {
+		window.location.href = "/";
+	}
+};
 
+rhit.initializePage = function() {
 	if (document.querySelector("#listPage")) {
 		console.log("You are on the list page.");
 		rhit.fbMovieQuotesManager = new rhit.FbMovieQuotesManager();
@@ -335,11 +336,21 @@ rhit.main = function () {
 		rhit.fbSingleQuoteManager = new rhit.FbSingleQuoteManager(movieQuoteId);
 		new rhit.DetailPageController();
 	}
-
 	if (document.querySelector("#loginPage")) {
 		console.log("You are on the login page.");
 		new rhit.LoginPageController();
 	}
+};
+
+/* Main */
+rhit.main = function () {
+	console.log("Ready");
+	rhit.fbAuthManager = new rhit.FbAuthManager();
+	rhit.fbAuthManager.beginListening(() => {
+		console.log("isSignedIn = ", rhit.fbAuthManager.isSignedIn);
+		rhit.checkForRedirects();
+		rhit.initializePage();
+	});
 
 	// Temp code for Read and Add
 	// const ref = firebase.firestore().collection("MovieQuotes");
