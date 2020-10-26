@@ -1,0 +1,80 @@
+body {
+    background: #DDDDDD;
+}
+
+.navbar {
+    background-color: #800000;
+    color: white;
+}
+
+.page-container {
+    margin-top: 75px;
+}
+
+#fab {
+    background: #800000;
+    bottom: 10px;
+    color: white;
+    position: fixed;
+    right: 10px;
+    z-index: 999;
+}
+
+#fab:active {
+    opacity: 0.8;
+    transform: translateY(2px);
+}
+
+.card {
+    margin: 10px 0;
+}
+
+#listPage .card-title,
+#listPage .card-subtitle {
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    text-overflow: ellipsis;
+}
+
+.dropdown-menu-right {
+    left: -128px;
+}
+
+#roseLogo {
+    max-width: 320px;
+    margin: 20px auto;
+    display: block;
+}
+
+#rosefireButton {
+    display: block;
+    margin: 60px auto;
+    color: white;
+    background: #800000;
+    font-size: 1.1em;
+    padding: 10px 30px;
+    border-radius: 5px;
+}
+
+.bmd-layout-content {
+    height: 100vh;
+}
+
+.bmd-layout-drawer>header {
+    background-color: #800000;
+    color: white;
+}
+
+.bmd-layout-drawer>ul {
+    background-color: #ddd;
+}
+
+.list-group-item :first-child {
+    margin-right: 0.75rem;
+}
+
+#menuEdit,
+#menuDelete {
+    display: none;
+}
