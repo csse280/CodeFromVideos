@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="styles/main.css">
   <title>My Profile</title>
 </head>
+
 <body>
   <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay">
     <header class="bmd-layout-header">
@@ -31,13 +32,23 @@
       </ul>
     </div>
     <main class="bmd-layout-content">
-      <div id="profilePage" class="container page-container">
-        
+      <div id="profilePage" class="container page-container" style="width: 18rem;">
+        <div class="card" >
+          <img id="profilePhoto" class="card-img-top" src="images/rose_logo.png" alt="Profile photo">
+          <button type="button" id="submitPhoto" class="btn btn-primary">Update Profile Photo</button>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="inputName" class="">Name</label>
+              <input type="email" class="form-control" id="inputName" placeholder="Your display name">
+            </div>
+          </div>
+        </div>
+        <div class="text-right">
+          <button type="button" id="submitName" class="btn">Done</button>
+        </div>
       </div>
     </main>
   </div>
-
-
   <script src="scripts/jquery.min.js"></script>
   <script src="scripts/popper.js"></script>
   <script src="scripts/bootstrap-material-design.js"></script>
