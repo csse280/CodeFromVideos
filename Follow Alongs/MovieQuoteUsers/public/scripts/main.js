@@ -17,20 +17,37 @@ function htmlToElement(html) {
 	return template.content.firstChild;
 }
 
+rhit.SideNavController = class {
+	constructor() {
+		const menuProfilePageItem = document.querySelector("#menuGoToProfilePage");
+		if (menuProfilePageItem) {
+			menuProfilePageItem.addEventListener("click", (event) => {
+				window.location.href = "/profile.html";
+			});
+		}
+		const menuShowAllQuotesItem = document.querySelector("#menuShowAllQuotes");
+		if (menuShowAllQuotesItem) {
+			menuShowAllQuotesItem.addEventListener("click", (event) => {
+				window.location.href = "/list.html";
+			});
+		}
+		const menuShowMyQuotesItem = document.querySelector("#menuShowMyQuotes");
+		if (menuShowMyQuotesItem) {
+			menuShowMyQuotesItem.addEventListener("click", (event) => {
+				window.location.href = `/list.html?uid=${rhit.fbAuthManager.uid}`;
+			});
+		}
+		const menuSignOutItem = document.querySelector("#menuSignOut");
+		if (menuSignOutItem) {
+			menuSignOutItem.addEventListener("click", (event) => {
+				rhit.fbAuthManager.signOut();
+			});
+		} 
+	}
+}
+
 rhit.ListPageController = class {
 	constructor() {
-
-		document.querySelector("#menuShowAllQuotes").addEventListener("click", (event) => {
-			window.location.href = "/list.html";
-		});
-		document.querySelector("#menuShowMyQuotes").addEventListener("click", (event) => {
-			window.location.href = `/list.html?uid=${rhit.fbAuthManager.uid}`;
-		});
-		document.querySelector("#menuSignOut").addEventListener("click", (event) => {
-			rhit.fbAuthManager.signOut();
-		});
-
-
 		// document.querySelector("#submitAddQuote").onclick = (event) => {
 		// };
 		document.querySelector("#submitAddQuote").addEventListener("click", (event) => {
@@ -129,16 +146,16 @@ rhit.FbMovieQuotesManager = class {
 
 		let query = this._ref.orderBy(rhit.FB_KEY_LAST_TOUCHED, "desc").limit(50);
 		if (this._uid) {
-				query = query.where(rhit.FB_KEY_AUTHOR, "==", this._uid);
+			query = query.where(rhit.FB_KEY_AUTHOR, "==", this._uid);
 		}
 		this._unsubscribe = query.onSnapshot((querySnapshot) => {
-				console.log("MovieQuote update!");
-				this._documentSnapshots = querySnapshot.docs;
-				// querySnapshot.forEach((doc) => {
-				// 	console.log(doc.data());
-				// });
-				changeListener();
-			});
+			console.log("MovieQuote update!");
+			this._documentSnapshots = querySnapshot.docs;
+			// querySnapshot.forEach((doc) => {
+			// 	console.log(doc.data());
+			// });
+			changeListener();
+		});
 	}
 
 	stopListening() {
@@ -259,22 +276,6 @@ rhit.FbSingleQuoteManager = class {
 	}
 }
 
-
-// rhit.storage = rhit.storage || {};
-// rhit.storage.MOVIEQUOTE_ID_KEY = "movieQuoteId";
-
-// rhit.storage.getMovieQuoteId = function () {
-// 	const mqId = sessionStorage.getItem(rhit.storage.MOVIEQUOTE_ID_KEY);
-// 	if (!mqId) {
-// 		console.log("No movie quote id in sessionStorage!");
-// 	}
-// 	return mqId;
-// };
-
-// rhit.storage.setMovieQuoteId = function (movieQuoteId) {
-// 	sessionStorage.setItem(rhit.storage.MOVIEQUOTE_ID_KEY, movieQuoteId);
-// };
-
 rhit.LoginPageController = class {
 	constructor() {
 		document.querySelector("#rosefireButton").onclick = (event) => {
@@ -331,7 +332,7 @@ rhit.FbAuthManager = class {
 	}
 }
 
-rhit.checkForRedirects = function() {
+rhit.checkForRedirects = function () {
 	if (document.querySelector("#loginPage") && rhit.fbAuthManager.isSignedIn) {
 		window.location.href = "/list.html";
 	}
@@ -340,8 +341,9 @@ rhit.checkForRedirects = function() {
 	}
 };
 
-rhit.initializePage = function() {
+rhit.initializePage = function () {
 	const urlParams = new URLSearchParams(window.location.search);
+	new rhit.SideNavController();
 	if (document.querySelector("#listPage")) {
 		console.log("You are on the list page.");
 		const uid = urlParams.get("uid");
