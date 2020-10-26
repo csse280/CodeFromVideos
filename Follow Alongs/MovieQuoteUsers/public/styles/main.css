@@ -78,3 +78,12 @@ body {
 #menuDelete {
     display: none;
 }
+
+.list-group-item {
+    cursor: pointer;
+}
+
+#submitName {
+    background-color: #800000;
+    color: white;
+}

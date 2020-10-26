@@ -5,9 +5,15 @@ rhit.FB_KEY_QUOTE = "quote";
 rhit.FB_KEY_MOVIE = "movie";
 rhit.FB_KEY_LAST_TOUCHED = "lastTouched";
 rhit.FB_KEY_AUTHOR = "author";
+
+rhit.FB_COLLECTION_USERS = "Users";
+rhit.FB_KEY_NAME = "name";
+rhit.FB_KEY_PHOTO_URL = "photoUrl";
+
 rhit.fbMovieQuotesManager = null;
 rhit.fbSingleQuoteManager = null;
 rhit.fbAuthManager = null;
+rhit.fbUserManager = null;
 
 // From: https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro/35385518#35385518
 function htmlToElement(html) {
@@ -17,20 +23,37 @@ function htmlToElement(html) {
 	return template.content.firstChild;
 }
 
+rhit.SideNavController = class {
+	constructor() {
+		const menuProfilePageItem = document.querySelector("#menuGoToProfilePage");
+		if (menuProfilePageItem) {
+			menuProfilePageItem.addEventListener("click", (event) => {
+				window.location.href = "/profile.html";
+			});
+		}
+		const menuShowAllQuotesItem = document.querySelector("#menuShowAllQuotes");
+		if (menuShowAllQuotesItem) {
+			menuShowAllQuotesItem.addEventListener("click", (event) => {
+				window.location.href = "/list.html";
+			});
+		}
+		const menuShowMyQuotesItem = document.querySelector("#menuShowMyQuotes");
+		if (menuShowMyQuotesItem) {
+			menuShowMyQuotesItem.addEventListener("click", (event) => {
+				window.location.href = `/list.html?uid=${rhit.fbAuthManager.uid}`;
+			});
+		}
+		const menuSignOutItem = document.querySelector("#menuSignOut");
+		if (menuSignOutItem) {
+			menuSignOutItem.addEventListener("click", (event) => {
+				rhit.fbAuthManager.signOut();
+			});
+		}
+	}
+}
+
 rhit.ListPageController = class {
 	constructor() {
-
-		document.querySelector("#menuShowAllQuotes").addEventListener("click", (event) => {
-			window.location.href = "/list.html";
-		});
-		document.querySelector("#menuShowMyQuotes").addEventListener("click", (event) => {
-			window.location.href = `/list.html?uid=${rhit.fbAuthManager.uid}`;
-		});
-		document.querySelector("#menuSignOut").addEventListener("click", (event) => {
-			rhit.fbAuthManager.signOut();
-		});
-
-
 		// document.querySelector("#submitAddQuote").onclick = (event) => {
 		// };
 		document.querySelector("#submitAddQuote").addEventListener("click", (event) => {
@@ -129,16 +152,16 @@ rhit.FbMovieQuotesManager = class {
 
 		let query = this._ref.orderBy(rhit.FB_KEY_LAST_TOUCHED, "desc").limit(50);
 		if (this._uid) {
-				query = query.where(rhit.FB_KEY_AUTHOR, "==", this._uid);
+			query = query.where(rhit.FB_KEY_AUTHOR, "==", this._uid);
 		}
 		this._unsubscribe = query.onSnapshot((querySnapshot) => {
-				console.log("MovieQuote update!");
-				this._documentSnapshots = querySnapshot.docs;
-				// querySnapshot.forEach((doc) => {
-				// 	console.log(doc.data());
-				// });
-				changeListener();
-			});
+			console.log("MovieQuote update!");
+			this._documentSnapshots = querySnapshot.docs;
+			// querySnapshot.forEach((doc) => {
+			// 	console.log(doc.data());
+			// });
+			changeListener();
+		});
 	}
 
 	stopListening() {
@@ -259,22 +282,6 @@ rhit.FbSingleQuoteManager = class {
 	}
 }
 
-
-// rhit.storage = rhit.storage || {};
-// rhit.storage.MOVIEQUOTE_ID_KEY = "movieQuoteId";
-
-// rhit.storage.getMovieQuoteId = function () {
-// 	const mqId = sessionStorage.getItem(rhit.storage.MOVIEQUOTE_ID_KEY);
-// 	if (!mqId) {
-// 		console.log("No movie quote id in sessionStorage!");
-// 	}
-// 	return mqId;
-// };
-
-// rhit.storage.setMovieQuoteId = function (movieQuoteId) {
-// 	sessionStorage.setItem(rhit.storage.MOVIEQUOTE_ID_KEY, movieQuoteId);
-// };
-
 rhit.LoginPageController = class {
 	constructor() {
 		document.querySelector("#rosefireButton").onclick = (event) => {
@@ -331,7 +338,38 @@ rhit.FbAuthManager = class {
 	}
 }
 
-rhit.checkForRedirects = function() {
+rhit.ProfilePageController = class {
+	constructor() {
+		console.log("Created Profile page controller");
+	}
+	updateView() {}
+}
+
+rhit.FbUserManager = class {
+	constructor() {
+		this._collectoinRef = firebase.firestore().collection(rhit.FB_COLLECTION_USERS);
+		this._document = null;
+		console.log("Created User Manager");
+	}
+	addNewUserMaybe(uid, name, photoUrl) {}
+	beginListening(uid, changeListener) {}
+	stopListening() {
+		this._unsubscribe();
+	}
+	updatePhotoUrl(photoUrl) {}
+	updateName(name) {}
+	get name() {
+		return this._document.get(rhit.FB_KEY_NAME);
+	}
+	get photoUrl() {
+		return this._document.get(rhit.FB_KEY_PHOTO_URL);
+	}
+}
+
+
+
+
+rhit.checkForRedirects = function () {
 	if (document.querySelector("#loginPage") && rhit.fbAuthManager.isSignedIn) {
 		window.location.href = "/list.html";
 	}
@@ -340,8 +378,9 @@ rhit.checkForRedirects = function() {
 	}
 };
 
-rhit.initializePage = function() {
+rhit.initializePage = function () {
 	const urlParams = new URLSearchParams(window.location.search);
+	new rhit.SideNavController();
 	if (document.querySelector("#listPage")) {
 		console.log("You are on the list page.");
 		const uid = urlParams.get("uid");
@@ -361,12 +400,17 @@ rhit.initializePage = function() {
 		console.log("You are on the login page.");
 		new rhit.LoginPageController();
 	}
+	if (document.querySelector("#profilePage")) {
+		console.log("You are on the profile page.");
+		new rhit.ProfilePageController();
+	}
 };
 
 /* Main */
 rhit.main = function () {
 	console.log("Ready");
 	rhit.fbAuthManager = new rhit.FbAuthManager();
+	rhit.fbUserManager = new rhit.FbUserManager();
 	rhit.fbAuthManager.beginListening(() => {
 		console.log("isSignedIn = ", rhit.fbAuthManager.isSignedIn);
 		rhit.checkForRedirects();
