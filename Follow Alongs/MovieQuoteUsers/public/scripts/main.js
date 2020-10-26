@@ -5,9 +5,15 @@ rhit.FB_KEY_QUOTE = "quote";
 rhit.FB_KEY_MOVIE = "movie";
 rhit.FB_KEY_LAST_TOUCHED = "lastTouched";
 rhit.FB_KEY_AUTHOR = "author";
+
+rhit.FB_COLLECTION_USERS = "Users";
+rhit.FB_KEY_NAME = "name";
+rhit.FB_KEY_PHOTO_URL = "photoUrl";
+
 rhit.fbMovieQuotesManager = null;
 rhit.fbSingleQuoteManager = null;
 rhit.fbAuthManager = null;
+rhit.fbUserManager = null;
 
 // From: https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro/35385518#35385518
 function htmlToElement(html) {
@@ -42,7 +48,7 @@ rhit.SideNavController = class {
 			menuSignOutItem.addEventListener("click", (event) => {
 				rhit.fbAuthManager.signOut();
 			});
-		} 
+		}
 	}
 }
 
@@ -332,6 +338,37 @@ rhit.FbAuthManager = class {
 	}
 }
 
+rhit.ProfilePageController = class {
+	constructor() {
+		console.log("Created Profile page controller");
+	}
+	updateView() {}
+}
+
+rhit.FbUserManager = class {
+	constructor() {
+		this._collectoinRef = firebase.firestore().collection(rhit.FB_COLLECTION_USERS);
+		this._document = null;
+		console.log("Created User Manager");
+	}
+	addNewUserMaybe(uid, name, photoUrl) {}
+	beginListening(uid, changeListener) {}
+	stopListening() {
+		this._unsubscribe();
+	}
+	updatePhotoUrl(photoUrl) {}
+	updateName(name) {}
+	get name() {
+		return this._document.get(rhit.FB_KEY_NAME);
+	}
+	get photoUrl() {
+		return this._document.get(rhit.FB_KEY_PHOTO_URL);
+	}
+}
+
+
+
+
 rhit.checkForRedirects = function () {
 	if (document.querySelector("#loginPage") && rhit.fbAuthManager.isSignedIn) {
 		window.location.href = "/list.html";
@@ -363,12 +400,17 @@ rhit.initializePage = function () {
 		console.log("You are on the login page.");
 		new rhit.LoginPageController();
 	}
+	if (document.querySelector("#profilePage")) {
+		console.log("You are on the profile page.");
+		new rhit.ProfilePageController();
+	}
 };
 
 /* Main */
 rhit.main = function () {
 	console.log("Ready");
 	rhit.fbAuthManager = new rhit.FbAuthManager();
+	rhit.fbUserManager = new rhit.FbUserManager();
 	rhit.fbAuthManager.beginListening(() => {
 		console.log("isSignedIn = ", rhit.fbAuthManager.isSignedIn);
 		rhit.checkForRedirects();
