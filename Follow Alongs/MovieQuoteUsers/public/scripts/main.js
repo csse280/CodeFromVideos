@@ -80,7 +80,6 @@ rhit.ListPageController = class {
 	updateList() {
 		console.log("I need to update the list on the page!");
 		console.log(`Num quotes = ${rhit.fbMovieQuotesManager.length}`);
-		console.log("Example quote = ", rhit.fbMovieQuotesManager.getMovieQuoteAtIndex(0));
 
 		// Make a new quoteListContainer
 		const newList = htmlToElement('<div id="quoteListContainer"></div>');
@@ -381,8 +380,13 @@ rhit.ProfilePageController = class {
 			const file = event.target.files[0]
 			console.log(`Received file named ${file.name}`);
 			const storageRef = firebase.storage().ref().child(rhit.fbAuthManager.uid);
-			storageRef.put(file).then((snapshot) => {
+			storageRef.put(file).then((uploadTaskSnapshot) => {
 				console.log("The file has been uploaded!");
+
+				// TODO: save the download url of this photo to the Firestore
+				storageRef.getDownloadURL().then((downloadUrl) => {
+					rhit.fbUserManager.updatePhotoUrl(downloadUrl);
+				});
 			});
 			console.log("Uploading the file");
 		});
@@ -451,8 +455,33 @@ rhit.FbUserManager = class {
 	stopListening() {
 		this._unsubscribe();
 	}
-	updatePhotoUrl(photoUrl) {}
-	updateName(name) {}
+
+	updatePhotoUrl(photoUrl) {
+		const userRef = this._collectoinRef.doc(rhit.fbAuthManager.uid);
+		userRef.update({
+				[rhit.FB_KEY_PHOTO_URL]: photoUrl,
+			})
+			.then(() => {
+				console.log("Document successfully updated!");
+			})
+			.catch(function (error) {
+				console.error("Error updating document: ", error);
+			});
+	}
+
+	updateName(name) {
+		const userRef = this._collectoinRef.doc(rhit.fbAuthManager.uid);
+		userRef.update({
+				[rhit.FB_KEY_NAME]: name,
+			})
+			.then(() => {
+				console.log("Document successfully updated!");
+			})
+			.catch(function (error) {
+				console.error("Error updating document: ", error);
+			});
+	}
+
 	get name() {
 		return this._document.get(rhit.FB_KEY_NAME);
 	}
