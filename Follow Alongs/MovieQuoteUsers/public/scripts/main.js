@@ -293,6 +293,8 @@ rhit.LoginPageController = class {
 rhit.FbAuthManager = class {
 	constructor() {
 		this._user = null;
+		this._name = "";
+		this._photoUrl = "";
 	}
 
 	beginListening(changeListener) {
@@ -310,6 +312,7 @@ rhit.FbAuthManager = class {
 				return;
 			}
 			console.log("Rosefire success!", rfUser);
+			this._name = rfUser.name;
 			firebase.auth().signInWithCustomToken(rfUser.token).catch((error) => {
 				const errorCode = error.code;
 				const errorMessage = error.message;
@@ -336,6 +339,14 @@ rhit.FbAuthManager = class {
 	get uid() {
 		return this._user.uid;
 	}
+
+	get name() {
+		return this._name;  // TODO: Make this method smarter later.
+	}
+
+	get photoUrl() {
+		return this._photoUrl;  // TODO: Make this method smarter later.
+	}
 }
 
 rhit.ProfilePageController = class {
@@ -351,7 +362,9 @@ rhit.FbUserManager = class {
 		this._document = null;
 		console.log("Created User Manager");
 	}
-	addNewUserMaybe(uid, name, photoUrl) {}
+	addNewUserMaybe(uid, name, photoUrl) {
+
+	}
 	beginListening(uid, changeListener) {}
 	stopListening() {
 		this._unsubscribe();
@@ -365,9 +378,6 @@ rhit.FbUserManager = class {
 		return this._document.get(rhit.FB_KEY_PHOTO_URL);
 	}
 }
-
-
-
 
 rhit.checkForRedirects = function () {
 	if (document.querySelector("#loginPage") && rhit.fbAuthManager.isSignedIn) {
@@ -406,6 +416,31 @@ rhit.initializePage = function () {
 	}
 };
 
+rhit.createUserObjectIfNeeded = function() {
+	return new Promise((resolve, reject) => {
+		// Check if a User might be new
+		if (!rhit.fbAuthManager.isSignedIn) {
+			console.log("No user.  So no User check needed");
+			resolve();
+			return;
+		}
+		if (!document.querySelector("#loginPage")) {
+			console.log("Not on login page.  So no User check needed");
+			resolve();
+			return;
+		}
+		// Call addNewUserMaybe
+		console.log("Checking user");
+		rhit.fbUserManager.addNewUserMaybe(
+			rhit.fbAuthManager.uid,
+			rhit.fbAuthManager.name,
+			rhit.fbAuthManager.photoUrl
+		).then(() => {
+			resolve();	
+		});
+	});
+}
+
 /* Main */
 rhit.main = function () {
 	console.log("Ready");
@@ -413,8 +448,10 @@ rhit.main = function () {
 	rhit.fbUserManager = new rhit.FbUserManager();
 	rhit.fbAuthManager.beginListening(() => {
 		console.log("isSignedIn = ", rhit.fbAuthManager.isSignedIn);
-		rhit.checkForRedirects();
-		rhit.initializePage();
+		rhit.createUserObjectIfNeeded().then(() => {
+			rhit.checkForRedirects();
+			rhit.initializePage();			
+		});
 	});
 
 	// Temp code for Read and Add
