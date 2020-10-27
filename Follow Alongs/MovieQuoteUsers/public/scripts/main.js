@@ -341,11 +341,11 @@ rhit.FbAuthManager = class {
 	}
 
 	get name() {
-		return this._name;  // TODO: Make this method smarter later.
+		return this._name; // TODO: Make this method smarter later.
 	}
 
 	get photoUrl() {
-		return this._photoUrl;  // TODO: Make this method smarter later.
+		return this._photoUrl; // TODO: Make this method smarter later.
 	}
 }
 
@@ -363,7 +363,31 @@ rhit.FbUserManager = class {
 		console.log("Created User Manager");
 	}
 	addNewUserMaybe(uid, name, photoUrl) {
-
+		// Check if the User is in Firebase already
+		const userRef = this._collectoinRef.doc(uid);
+		return userRef.get().then((doc) => {
+			if (doc.exists) {
+				console.log("User already exists:", doc.data());
+				// Do nothin there is alread a User!
+				return;
+			} else {
+				// doc.data() will be undefined in this case
+				console.log("Creating this user!");
+				// Add a new document in collection "cities"
+				return userRef.set({
+					[rhit.FB_KEY_NAME]: name,
+					[rhit.FB_KEY_PHOTO_URL]: photoUrl,
+					})
+					.then(function () {
+						console.log("Document successfully written!");
+					})
+					.catch(function (error) {
+						console.error("Error writing document: ", error);
+					});
+			}
+		}).catch(function (error) {
+			console.log("Error getting document:", error);
+		});
 	}
 	beginListening(uid, changeListener) {}
 	stopListening() {
@@ -416,7 +440,7 @@ rhit.initializePage = function () {
 	}
 };
 
-rhit.createUserObjectIfNeeded = function() {
+rhit.createUserObjectIfNeeded = function () {
 	return new Promise((resolve, reject) => {
 		// Check if a User might be new
 		if (!rhit.fbAuthManager.isSignedIn) {
@@ -436,7 +460,7 @@ rhit.createUserObjectIfNeeded = function() {
 			rhit.fbAuthManager.name,
 			rhit.fbAuthManager.photoUrl
 		).then(() => {
-			resolve();	
+			resolve();
 		});
 	});
 }
@@ -450,7 +474,7 @@ rhit.main = function () {
 		console.log("isSignedIn = ", rhit.fbAuthManager.isSignedIn);
 		rhit.createUserObjectIfNeeded().then(() => {
 			rhit.checkForRedirects();
-			rhit.initializePage();			
+			rhit.initializePage();
 		});
 	});
 
