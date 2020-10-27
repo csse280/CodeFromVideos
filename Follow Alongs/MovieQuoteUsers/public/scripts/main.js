@@ -371,6 +371,22 @@ rhit.ProfilePageController = class {
 		console.log("Created Profile page controller");
 
 		// Handle the two buttons.
+		document.querySelector("#submitPhoto").onclick = (event) => {
+			console.log("You pressed Upload photo");
+			document.querySelector("#inputFile").click();
+		};
+
+		document.querySelector("#inputFile").addEventListener("change", (event) => {
+			console.log("You selected a file");
+			const file = event.target.files[0]
+			console.log(`Received file named ${file.name}`);
+			const storageRef = firebase.storage().ref().child(rhit.fbAuthManager.uid);
+			storageRef.put(file).then((snapshot) => {
+				console.log("The file has been uploaded!");
+			});
+			console.log("Uploading the file");
+		});
+
 
 		// Start listening for users
 		rhit.fbUserManager.beginListening(rhit.fbAuthManager.uid, this.updateView.bind(this));
