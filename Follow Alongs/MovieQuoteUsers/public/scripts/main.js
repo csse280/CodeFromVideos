@@ -78,8 +78,14 @@ rhit.ListPageController = class {
 
 
 	updateList() {
-		console.log("I need to update the list on the page!");
-		console.log(`Num quotes = ${rhit.fbMovieQuotesManager.length}`);
+		if (rhit.fbMovieQuotesManager.uid) {
+			if (!rhit.fbUserManager.isListening) {
+				rhit.fbUserManager.beginListening(rhit.fbMovieQuotesManager.uid, () => {
+					document.querySelector("#userSpecificHeading").innerHTML =
+					`Showing quotes made by ${rhit.fbUserManager.name}`;	
+				});
+			}
+		}
 
 		// Make a new quoteListContainer
 		const newList = htmlToElement('<div id="quoteListContainer"></div>');
@@ -125,7 +131,7 @@ rhit.MovieQuote = class {
 
 rhit.FbMovieQuotesManager = class {
 	constructor(uid) {
-		this._uid = uid;
+		this.uid = uid;
 		this._documentSnapshots = [];
 		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_MOVIEQUOTE);
 		this._unsubscribe = null;
@@ -148,10 +154,9 @@ rhit.FbMovieQuotesManager = class {
 	}
 
 	beginListening(changeListener) {
-
 		let query = this._ref.orderBy(rhit.FB_KEY_LAST_TOUCHED, "desc").limit(50);
-		if (this._uid) {
-			query = query.where(rhit.FB_KEY_AUTHOR, "==", this._uid);
+		if (this.uid) {
+			query = query.where(rhit.FB_KEY_AUTHOR, "==", this.uid);
 		}
 		this._unsubscribe = query.onSnapshot((querySnapshot) => {
 			console.log("MovieQuote update!");
@@ -244,8 +249,6 @@ rhit.DetailPageController = class {
 			}
 		}
 	}
-
-
 }
 
 rhit.FbSingleQuoteManager = class {
