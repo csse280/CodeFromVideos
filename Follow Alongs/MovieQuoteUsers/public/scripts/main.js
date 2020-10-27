@@ -287,6 +287,8 @@ rhit.LoginPageController = class {
 		document.querySelector("#rosefireButton").onclick = (event) => {
 			rhit.fbAuthManager.signIn();
 		};
+
+		rhit.fbAuthManager.startFirebaseUI();
 	}
 }
 
@@ -300,6 +302,7 @@ rhit.FbAuthManager = class {
 	beginListening(changeListener) {
 		firebase.auth().onAuthStateChanged((user) => {
 			this._user = user;
+			console.log(this._user);
 			changeListener();
 		});
 	}
@@ -332,6 +335,20 @@ rhit.FbAuthManager = class {
 		});
 	}
 
+	startFirebaseUI = function () {
+		var uiConfig = {
+			signInSuccessUrl: '/',
+			signInOptions: [
+				firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+				firebase.auth.EmailAuthProvider.PROVIDER_ID,
+				firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+				firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID
+			],
+		};
+		const ui = new firebaseui.auth.AuthUI(firebase.auth());
+		ui.start('#firebaseui-auth-container', uiConfig);
+	}
+
 	get isSignedIn() {
 		return !!this._user;
 	}
@@ -341,11 +358,11 @@ rhit.FbAuthManager = class {
 	}
 
 	get name() {
-		return this._name; // TODO: Make this method smarter later.
+		return this._name || this._user.displayName;
 	}
 
 	get photoUrl() {
-		return this._photoUrl; // TODO: Make this method smarter later.
+		return this._photoUrl || this._user.photoURL;
 	}
 }
 
@@ -363,7 +380,7 @@ rhit.ProfilePageController = class {
 			document.querySelector("#inputName").value = rhit.fbUserManager.name;
 		}
 		if (rhit.fbUserManager.photoUrl) {
-		  document.querySelector("#profilePhoto").src = rhit.fbUserManager.photoUrl;
+			document.querySelector("#profilePhoto").src = rhit.fbUserManager.photoUrl;
 		}
 	}
 }
@@ -387,8 +404,8 @@ rhit.FbUserManager = class {
 				console.log("Creating this user!");
 				// Add a new document in collection "cities"
 				return userRef.set({
-					[rhit.FB_KEY_NAME]: name,
-					[rhit.FB_KEY_PHOTO_URL]: photoUrl,
+						[rhit.FB_KEY_NAME]: name,
+						[rhit.FB_KEY_PHOTO_URL]: photoUrl,
 					})
 					.then(function () {
 						console.log("Document successfully written!");
