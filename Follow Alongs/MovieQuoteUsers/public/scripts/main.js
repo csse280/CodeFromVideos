@@ -352,8 +352,20 @@ rhit.FbAuthManager = class {
 rhit.ProfilePageController = class {
 	constructor() {
 		console.log("Created Profile page controller");
+
+		// Handle the two buttons.
+
+		// Start listening for users
+		rhit.fbUserManager.beginListening(rhit.fbAuthManager.uid, this.updateView.bind(this));
 	}
-	updateView() {}
+	updateView() {
+		if (rhit.fbUserManager.name) {
+			document.querySelector("#inputName").value = rhit.fbUserManager.name;
+		}
+		if (rhit.fbUserManager.photoUrl) {
+		  document.querySelector("#profilePhoto").src = rhit.fbUserManager.photoUrl;
+		}
+	}
 }
 
 rhit.FbUserManager = class {
@@ -390,7 +402,19 @@ rhit.FbUserManager = class {
 			console.log("Error getting document:", error);
 		});
 	}
-	beginListening(uid, changeListener) {}
+	beginListening(uid, changeListener) {
+		const userRef = this._collectoinRef.doc(uid);
+		this._unsubscribe = userRef.onSnapshot((doc) => {
+			if (doc.exists) {
+				console.log("Document data:", doc.data());
+				this._document = doc;
+				changeListener();
+			} else {
+				console.log("No User!  That's bad!");
+			}
+		});
+
+	}
 	stopListening() {
 		this._unsubscribe();
 	}
