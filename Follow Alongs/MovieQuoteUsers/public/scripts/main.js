@@ -215,6 +215,11 @@ rhit.DetailPageController = class {
 		rhit.fbSingleQuoteManager.beginListening(this.updateView.bind(this));
 	}
 	updateView() {
+		if (!rhit.fbUserManager.isListening) {
+			rhit.fbUserManager.beginListening(
+				rhit.fbSingleQuoteManager.author,
+				this.updateAuthorBox.bind(this));	
+		}
 		document.querySelector("#cardQuote").innerHTML = rhit.fbSingleQuoteManager.quote;
 		document.querySelector("#cardMovie").innerHTML = rhit.fbSingleQuoteManager.movie;
 		if (rhit.fbSingleQuoteManager.author == rhit.fbAuthManager.uid) {
@@ -222,6 +227,25 @@ rhit.DetailPageController = class {
 			document.querySelector("#menuDelete").style.display = "flex";
 		}
 	}
+
+	updateAuthorBox() {
+		//console.log("Update the author box");
+		if (rhit.fbUserManager.name) {
+			document.querySelector("#authorName").innerHTML = rhit.fbUserManager.name;
+		}
+		if (rhit.fbUserManager.photoUrl) {
+			document.querySelector("#profilePhoto").src = rhit.fbUserManager.photoUrl;
+		}
+		document.querySelector("#authorBox").onclick = (event) => {
+			if (rhit.fbSingleQuoteManager.author == rhit.fbAuthManager.uid) {
+				window.location.href = "/profile.html";
+			} else {
+				window.location.href = `/list.html?uid=${rhit.fbSingleQuoteManager.author}`;
+			}
+		}
+	}
+
+
 }
 
 rhit.FbSingleQuoteManager = class {
@@ -373,7 +397,7 @@ rhit.ProfilePageController = class {
 		document.querySelector("#submitName").onclick = (event) => {
 			const name = document.querySelector("#inputName").value;
 			rhit.fbUserManager.updateName(name).then(() => {
-				window.location.href = "/list.html";	
+				window.location.href = "/list.html";
 			});
 		};
 
@@ -417,7 +441,7 @@ rhit.FbUserManager = class {
 	constructor() {
 		this._collectoinRef = firebase.firestore().collection(rhit.FB_COLLECTION_USERS);
 		this._document = null;
-		console.log("Created User Manager");
+		this._unsubscribe = null;
 	}
 	addNewUserMaybe(uid, name, photoUrl) {
 		// Check if the User is in Firebase already
@@ -462,6 +486,10 @@ rhit.FbUserManager = class {
 	}
 	stopListening() {
 		this._unsubscribe();
+	}
+
+	get isListening() {
+		return !!this._unsubscribe;
 	}
 
 	updatePhotoUrl(photoUrl) {
