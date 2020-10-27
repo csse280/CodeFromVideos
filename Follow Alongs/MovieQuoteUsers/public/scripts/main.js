@@ -369,7 +369,7 @@ rhit.FbUserManager = class {
 			if (doc.exists) {
 				console.log("User already exists:", doc.data());
 				// Do nothin there is alread a User!
-				return;
+				return false;
 			} else {
 				// doc.data() will be undefined in this case
 				console.log("Creating this user!");
@@ -380,6 +380,7 @@ rhit.FbUserManager = class {
 					})
 					.then(function () {
 						console.log("Document successfully written!");
+						return true;
 					})
 					.catch(function (error) {
 						console.error("Error writing document: ", error);
@@ -445,12 +446,12 @@ rhit.createUserObjectIfNeeded = function () {
 		// Check if a User might be new
 		if (!rhit.fbAuthManager.isSignedIn) {
 			console.log("No user.  So no User check needed");
-			resolve();
+			resolve(false);
 			return;
 		}
 		if (!document.querySelector("#loginPage")) {
 			console.log("Not on login page.  So no User check needed");
-			resolve();
+			resolve(false);
 			return;
 		}
 		// Call addNewUserMaybe
@@ -459,8 +460,8 @@ rhit.createUserObjectIfNeeded = function () {
 			rhit.fbAuthManager.uid,
 			rhit.fbAuthManager.name,
 			rhit.fbAuthManager.photoUrl
-		).then(() => {
-			resolve();
+		).then((isUserNew) => {
+			resolve(isUserNew);
 		});
 	});
 }
@@ -472,7 +473,12 @@ rhit.main = function () {
 	rhit.fbUserManager = new rhit.FbUserManager();
 	rhit.fbAuthManager.beginListening(() => {
 		console.log("isSignedIn = ", rhit.fbAuthManager.isSignedIn);
-		rhit.createUserObjectIfNeeded().then(() => {
+		rhit.createUserObjectIfNeeded().then((isUserNew) => {
+			console.log('isUserNew :>> ', isUserNew);
+			if (isUserNew) {
+				window.location.href = "/profile.html";
+				return;
+			}
 			rhit.checkForRedirects();
 			rhit.initializePage();
 		});
