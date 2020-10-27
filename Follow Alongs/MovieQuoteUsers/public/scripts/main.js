@@ -370,6 +370,14 @@ rhit.ProfilePageController = class {
 		console.log("Created Profile page controller");
 
 		// Handle the two buttons.
+		document.querySelector("#submitName").onclick = (event) => {
+			const name = document.querySelector("#inputName").value;
+			rhit.fbUserManager.updateName(name).then(() => {
+				window.location.href = "/list.html";	
+			});
+		};
+
+
 		document.querySelector("#submitPhoto").onclick = (event) => {
 			console.log("You pressed Upload photo");
 			document.querySelector("#inputFile").click();
@@ -471,7 +479,7 @@ rhit.FbUserManager = class {
 
 	updateName(name) {
 		const userRef = this._collectoinRef.doc(rhit.fbAuthManager.uid);
-		userRef.update({
+		return userRef.update({
 				[rhit.FB_KEY_NAME]: name,
 			})
 			.then(() => {
