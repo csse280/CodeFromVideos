@@ -26,7 +26,8 @@ const xyzHandler =  (request, response)  => {
 };
 
 const faviconHandler =  (request, response)  => {
-    response.writeHead(200,{'Content-Type':'imaeg/x-con'} );
+    //https://gist.github.com/kentbrew/763822
+    response.writeHead(200,{'Content-Type':'image/x-icon'} );
     response.end();
     //console.log("favicon requested");
 };
