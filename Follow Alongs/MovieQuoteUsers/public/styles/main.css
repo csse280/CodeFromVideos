@@ -87,3 +87,17 @@ body {
     background-color: #800000;
     color: white;
 }
+
+#authorBox {
+    position: fixed;
+    bottom: 10px;
+    right: 20px;
+    z-index: 999;
+ }
+ 
+ #detailPage #profilePhoto {
+    display: block;
+    max-width: 150px;
+    max-height: 200px;
+ }
+ 
