@@ -25,12 +25,12 @@ function htmlToElement(html) {
 
 rhit.SideNavController = class {
 	constructor() {
-		const menuProfilePageItem = document.querySelector("#menuGoToProfilePage");
-		if (menuProfilePageItem) {
-			menuProfilePageItem.addEventListener("click", (event) => {
-				window.location.href = "/profile.html";
-			});
-		}
+
+		// Optional chaining works, but the VS code auto formatter doesn't respect it.
+		document.querySelector("#menuGoToProfilePage")?.addEventListener("click", (event) => {
+			window.location.href = "/profile.html";
+		});
+
 		const menuShowAllQuotesItem = document.querySelector("#menuShowAllQuotes");
 		if (menuShowAllQuotesItem) {
 			menuShowAllQuotesItem.addEventListener("click", (event) => {
@@ -82,7 +82,7 @@ rhit.ListPageController = class {
 			if (!rhit.fbUserManager.isListening) {
 				rhit.fbUserManager.beginListening(rhit.fbMovieQuotesManager.uid, () => {
 					document.querySelector("#userSpecificHeading").innerHTML =
-					`Showing quotes made by ${rhit.fbUserManager.name}`;	
+						`Showing quotes made by ${rhit.fbUserManager.name}`;
 				});
 			}
 		}
@@ -223,7 +223,7 @@ rhit.DetailPageController = class {
 		if (!rhit.fbUserManager.isListening) {
 			rhit.fbUserManager.beginListening(
 				rhit.fbSingleQuoteManager.author,
-				this.updateAuthorBox.bind(this));	
+				this.updateAuthorBox.bind(this));
 		}
 		document.querySelector("#cardQuote").innerHTML = rhit.fbSingleQuoteManager.quote;
 		document.querySelector("#cardMovie").innerHTML = rhit.fbSingleQuoteManager.movie;
