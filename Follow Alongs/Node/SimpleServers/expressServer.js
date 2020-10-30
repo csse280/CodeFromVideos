@@ -1,6 +1,8 @@
 var express = require("express");
 var app = express();
 
+let counter = 0;
+
 app.use('/static', express.static("public") );
 
 //query params
@@ -41,6 +43,8 @@ app.get('/pug/', function (req, res) {
         arr: array} );
 });
 
-
+app.get('/pug/hello', function (req, res) {
+    res.render('hello', { title:"Hello Button", count: counter} );
+});
 
 app.listen(3000);
