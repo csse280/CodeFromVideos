@@ -36,7 +36,7 @@ app.get('/pug/', function (req, res) {
         {name:"Jason"},
         {name:"Eliza"},
         {name:"Dave"}
-    ]
+    ];
     res.render('index',  {
         title: 'Hey', 
         message:"Hello there!",
@@ -44,6 +44,17 @@ app.get('/pug/', function (req, res) {
 });
 
 app.get('/pug/hello', function (req, res) {
+    res.render('hello', { title:"Hello Button", count: counter} );
+});
+
+//middleware
+var bodyParser = require("body-parser");
+app.use('/pug/hello', bodyParser.urlencoded( {extended: false}));
+
+app.post('/pug/hello', function (req, res) {
+    console.log( req.body );
+    counter = req.body.count || counter;
+
     res.render('hello', { title:"Hello Button", count: counter} );
 });
 

@@ -8,7 +8,7 @@ body {
   padding: 5vw;
 }
 
-.button-group > button {
+.button-group button {
   font-size: 1.5em;
   padding: 10px 20px;
   margin: 0 10px;
