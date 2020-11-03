@@ -1,13 +1,13 @@
 var express = require("express");
 var app = express();
-const logger = require("morgan"); //useful for logging requests
-app.use(logger("dev") );
+const logger = require("morgan");
+app.use( logger('dev') ); //see activity from requests
 
 let data=[];
-let counter = 0;
 
 const fs = require("fs");
 const serverSideStorage = "../data/db.json";
+
 
 fs.readFile(serverSideStorage, function(err, buf) {
     if (err) {
@@ -31,12 +31,15 @@ function saveToServer(data) {
     })
 }
 
+
 app.use('/static', express.static("public") );
 
 
 //middleware
 var bodyParser = require("body-parser");
-app.use('/api/', bodyParser.urlencoded( {extended: true} )   );
-app.use('/api/', bodyParser.json()  );
+app.use('/api/', bodyParser.urlencoded( {extended: true}));
+app.use('/api/', bodyParser.json() );
+
+
 
 app.listen(3000);
