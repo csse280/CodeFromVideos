@@ -6,32 +6,9 @@ app.use( cors() );
 require('./models/db');
 const HelloEntry = require('./models/helloEntry');
 
-let data=[];
-
 const logger = require("morgan");
 app.use( logger('dev') ); //helpful information serverside when requests come in
 
-const fs = require("fs");
-const serverSideStorage = "../data/db.json";
-
-fs.readFile(serverSideStorage, function(err, buf) {
-    if (err) {
-        console.log("error: ", err);
-    } else {
-        data = JSON.parse( buf.toString()  );
-    }
-    console.log("Data read from file.");
-});
-
-function saveToServer(data) {
-    fs.writeFile(serverSideStorage, JSON.stringify(data), function(err, buf) {
-        if (err) {
-            console.log("error: ", err);
-        } else {
-            console.log("Data saved successfully!");
-        }
-    })
-}
 
 //middleware
 var bodyParser = require("body-parser");
@@ -56,18 +33,32 @@ app.get("/api/", function (req, res) {
 app.post("/api/", function (req, res) {
     let name = req.body.name;
     let counter = req.body.count;
-    data.push( {"name":name, "count": counter}   );
-    saveToServer(data)
-    res.send( "POST successful!" );
-    res.end();
+    HelloEntry.create( {
+        name: name,
+        count: counter
+    }, (err, entry) => {
+        if (err) {
+            res.json(err);
+        } else {
+            res.json(entry);
+        }
+    });
+
 });
 
 //READ ONE
 app.get("/api/id/:id", function (req, res) {
-    let id =  parseInt(req.params.id);
-    let result = data[id];
-    res.send( result );
-    res.end();
+    let id =  req.params.id;
+    HelloEntry.findById(id, (err, entry) => {
+        if (err) {
+            res.json(err);
+        } else {
+            res.json(entry);
+        }
+    });
+    // let result = data[id];
+    // res.send( result );
+    // res.end();
 }).put("/api/id/:id", function (req, res) {
     let id =  parseInt(req.params.id);
     let name = req.body.name;
