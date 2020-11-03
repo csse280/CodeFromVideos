@@ -3,6 +3,8 @@ var app = express();
 var cors = require("cors");
 
 app.use( cors() );
+require('./models/db');
+const HelloEntry = require('./models/helloEntry');
 
 let data=[];
 
@@ -38,8 +40,16 @@ app.use('/api/', bodyParser.json() );
 
 //READ ALL
 app.get("/api/", function (req, res) {
-    res.send( data );
-    res.end();
+    HelloEntry.find( {}, (err, entries) => {
+        if (err) {
+            res.json( err );
+        } else {
+            console.log( entries );
+            res.json(  entries );
+        }
+    }  );
+    //res.send( data );
+    // res.end();
 });
 
 //CREATE 
