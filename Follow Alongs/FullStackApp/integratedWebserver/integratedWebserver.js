@@ -14,9 +14,6 @@ fs.readFile(serverSideStorage, function(err, buf) {
         console.log("error: ", err);
     } else {
         data = JSON.parse( buf.toString()  );
-        if (data.length != 0) {
-            counter = data[data.length-1];
-        }
     }
     console.log("Data read from file.");
 });
@@ -38,5 +35,9 @@ var bodyParser = require("body-parser");
 app.use('/api/', bodyParser.urlencoded( {extended: true}));
 app.use('/api/', bodyParser.json() );
 
+app.get("/api/", function (req, res) {
+    res.send( data );
+    res.end();
+});
 
 app.listen(3000);
