@@ -35,9 +35,30 @@ var bodyParser = require("body-parser");
 app.use('/api/', bodyParser.urlencoded( {extended: true}));
 app.use('/api/', bodyParser.json() );
 
+//READ ALL
 app.get("/api/", function (req, res) {
     res.send( data );
     res.end();
 });
+
+//CREATE 
+app.post("/api/", function (req, res) {
+    let name = req.body.name;
+    let counter = req.body.count;
+    data.push( {"name":name, "count": counter}   );
+    saveToServer(data)
+    res.send( "POST successful!" );
+    res.end();
+});
+
+//READ ONE
+app.get("/api/id/:id", function (req, res) {
+    let id =  parseInt(req.params.id);
+    let result = data[id];
+    res.send( result );
+    res.end();
+});
+
+
 
 app.listen(3000);
