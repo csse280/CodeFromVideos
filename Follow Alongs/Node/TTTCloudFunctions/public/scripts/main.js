@@ -35,7 +35,9 @@ rhit.PageController = class {
 			// }).then((data) => {
 			// 	console.log(data);
 			// });
-			fetch(`/api/getmove/${boardString}`)
+
+			// fetch(`/api/getmove/${boardString}`)
+			fetch(`http://localhost:5001/fisherds-cloudfunctions/us-central1/api/getmove/${boardString}`)
 				.then(response => response.json())
 				.then(data => {
 					console.log("Received", data);
