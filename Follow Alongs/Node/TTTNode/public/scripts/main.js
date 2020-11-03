@@ -25,6 +25,25 @@ rhit.PageController = class {
 			square.innerHTML = this.game.getMarkAtIndex(index);
 		});
 		document.querySelector("#gameStateText").innerHTML = this.game.state;
+
+		// TODO: Have the server make a move IF the turn is O_TURN
+		if (this.game.isOTurn) {
+			const boardString = this.game.boardString;
+			// fetch(`/api/getmove/${boardString}`).then((response) => {
+			// 	console.log(response);
+			// 	return response.json();
+			// }).then((data) => {
+			// 	console.log(data);
+			// });
+			fetch(`/api/getmove/${boardString}`)
+				.then(response => response.json())
+				.then(data => {
+					console.log("Received", data);
+					this.game.pressedButtonAtIndex(data.move);
+					this.updateView();
+				});
+		}
+
 	}
 };
 
@@ -54,9 +73,9 @@ rhit.Game = class {
 
 	pressedButtonAtIndex(buttonIndex) {
 		if (this.state == rhit.Game.State.X_WIN ||
-			  this.state == rhit.Game.State.O_WIN ||
-			  this.state == rhit.Game.State.TIE) {
-					console.log("The game is over");
+			this.state == rhit.Game.State.O_WIN ||
+			this.state == rhit.Game.State.TIE) {
+			console.log("The game is over");
 			return;
 		}
 		if (this.board[buttonIndex] != rhit.Game.Mark.NONE) {
@@ -106,6 +125,23 @@ rhit.Game = class {
 	getState() {
 		return this.state;
 	}
+
+	get isOTurn() {
+		return this.state == rhit.Game.State.O_TURN;
+	}
+
+	get boardString() {
+		let boardString = "";
+		for (let k = 0; k < 9; k++) {
+			if (this.board[k] == rhit.Game.Mark.NONE) {
+				boardString += "-";
+			} else {
+				boardString += this.board[k];
+			}
+		}
+		return boardString;
+	}
+
 };
 
 rhit.main = function () {
