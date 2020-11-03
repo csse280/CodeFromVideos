@@ -57,6 +57,20 @@ app.get("/api/id/:id", function (req, res) {
     let result = data[id];
     res.send( result );
     res.end();
+}).put("/api/id/:id", function (req, res) {
+    let id =  parseInt(req.params.id);
+    let name = req.body.name;
+    let counter = req.body.count;
+    data[id] = {"name":name, "count": counter} ;
+    saveToServer(data);
+    res.send( "PUT successful!" );
+    res.end();
+}).delete("/api/id/:id", function (req, res) {
+    let id =  parseInt(req.params.id);
+    data.splice(id,1);
+    saveToServer(data);
+    res.send( "DELETE successful!" );
+    res.end();
 });
 
 

@@ -24,6 +24,17 @@ function main() {
     createEntry();
   };
 
+  document.querySelector("#updateButton").onclick = (event) => {
+    updateEntry();
+  };
+
+  document.querySelector("#deleteButton").onclick = (event) => {
+    deleteEntry();
+  };
+
+
+
+
   loadEntries(); //get the data from server and populate our entries
 
 }
@@ -69,6 +80,46 @@ function loadEntry( id ) {
   });
 
 }
+
+
+function deleteEntry( ) {
+  fetch( apiURL + "id/" + selectedId,
+    { method : "DELETE" }
+  )
+  .then( data => {
+    editEntryMode = false;
+    document.querySelector("#inputName").value = "";
+    counter = 0;
+    updateView();
+    loadEntries();
+  })
+  .catch( err => {
+    console.log(err);
+  });
+}
+
+function updateEntry( ) {
+  let name = document.querySelector("#inputName").value;
+  let data ={  "name":name, "count": counter };
+  fetch( apiURL + "id/" + selectedId,
+    { method : "PUT",
+      headers: { "Content-Type": 'application/json'},
+      body: JSON.stringify( data ) 
+    }
+  )
+  .then( data => {
+    editEntryMode = false;
+    document.querySelector("#inputName").value = "";
+    counter = 0;
+    updateView();
+    loadEntries();
+  })
+  .catch( err => {
+    console.log(err);
+  });
+}
+
+
 
 
 function createEntry() {
