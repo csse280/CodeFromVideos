@@ -163,13 +163,11 @@ rhit.DetailPageController = class {
 			document.querySelector("#inputQuote").focus();
 		});
 
-		document.querySelector("#submitDeleteQuote").addEventListener("click", (event) => {
-			rhit.fbSingleQuoteManager.delete().then(function () {
+		document.querySelector("#submitDeleteQuote").addEventListener("click", event => {
+			rhit.fbSingleQuoteManager.delete().then(() => {
 				console.log("Document successfully deleted!");
 				window.location.href = "/";
-			}).catch(function (error) {
-				console.error("Error removing document: ", error);
-			});
+			}).catch(error => console.error("Error removing document: ", error));
 		});
 
 		rhit.fbSingleQuoteManager.beginListening(this.updateView.bind(this));
