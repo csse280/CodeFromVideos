@@ -60,8 +60,9 @@ function loadEntries() {
     .then( response => response.json() )
     .then( data => {
       for (let i=0; i< data.length; i++) {
+        console.log(  data[i]._id );
         document.querySelector("#displayEntries").innerHTML += 
-        `<button id="id${i}" onclick=loadEntry(${i});   >Select Entry</button><label>${data[i].name}</label>` +
+        `<button id="id${i}" onclick=loadEntry('${ data[i]._id }');   >Select Entry</button><label>${data[i].name}</label>` +
         `&nbsp;<label>${data[i].count}</label><br>`;
       }
     });
