@@ -177,8 +177,8 @@ rhit.DetailPageController = class {
 		console.log("Adding the poster image");
 		let apikey = "691ddc11";
 		// let apikey = "194cb371";
-		let url = `http://www.omdbapi.com/?apikey=${apikey}&t=${rhit.fbSingleQuoteManager.movie}`;
-		// let url = `http://img.omdbapi.com/?apikey=${apikey}&t=${rhit.fbSingleQuoteManager.movie}`;
+		let url = `//www.omdbapi.com/?apikey=${apikey}&t=${rhit.fbSingleQuoteManager.movie}`;
+		// let url = `//img.omdbapi.com/?apikey=${apikey}&t=${rhit.fbSingleQuoteManager.movie}`;
 		console.log(`Sending request to ${url}`);
 		fetch(url).then((response) => {
 			return response.json();

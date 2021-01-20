@@ -43,4 +43,6 @@ body {
 
 #cardPoster {
     display: none;
+    max-width: 300px;
+    margin: auto;
 }
