@@ -176,27 +176,41 @@ rhit.DetailPageController = class {
 		document.querySelector("#cardQuote").innerHTML = rhit.fbSingleQuoteManager.quote;
 		document.querySelector("#cardMovie").innerHTML = rhit.fbSingleQuoteManager.movie;
 		this.updatePoster();
+		console.log("This code runs BEFORE things finish due to updatePoster being async");
 	}
 
-	updatePoster() {
+	async updatePoster() {
 		let url = `//www.omdbapi.com/?apikey=691ddc11&t=${rhit.fbSingleQuoteManager.movie}`;
 		console.log(`Do a fetch for url: ${url}`);
-		fetch(url).then((response) => {
-			console.log(response);
-			return response.json();
-		}).then(  (data) => {
-			console.log(data);
-			let isSuccess = data["Response"] == "True";
-			let posterUrl = data["Poster"];
-			let posterImgEl = document.querySelector("#cardPoster");
-			if (isSuccess && posterUrl.length > 5) {
-				posterImgEl.src = posterUrl;
-				posterImgEl.style.display = "flex";
-			} else {
-				posterImgEl.style.display = "none";
-			}
-		});
-		console.log("This prints before the fetch returns");
+
+		// fetch(url).then(response => response.json())
+		// .then(  (data) => {
+		// 	console.log(data);
+		// 	let isSuccess = data["Response"] == "True";
+		// 	let posterUrl = data["Poster"];
+		// 	let posterImgEl = document.querySelector("#cardPoster");
+		// 	if (isSuccess && posterUrl.length > 5) {
+		// 		posterImgEl.src = posterUrl;
+		// 		posterImgEl.style.display = "flex";
+		// 	} else {
+		// 		posterImgEl.style.display = "none";
+		// 	}
+		// });
+		// console.log("This prints before the fetch returns");
+
+		let response = await fetch(url);
+		let data = await response.json();
+		console.log(data);
+		let isSuccess = data["Response"] == "True";
+		let posterUrl = data["Poster"];
+		let posterImgEl = document.querySelector("#cardPoster");
+		if (isSuccess && posterUrl.length > 5) {
+			posterImgEl.src = posterUrl;
+			posterImgEl.style.display = "flex";
+		} else {
+			posterImgEl.style.display = "none";
+		}
+		console.log("This prints after all the blocking stuff is done.");
 	}
 }
 
