@@ -43,7 +43,9 @@ rhit.ListPageController = class {
 
 
 	updateList() {
+		console.log("I need to update the list on the page!");
 		console.log(`Num quotes = ${rhit.fbMovieQuotesManager.length}`);
+		// console.log("Example quote = ", rhit.fbMovieQuotesManager.getMovieQuoteAtIndex(0));
 
 		// Make a new quoteListContainer
 		const newList = htmlToElement('<div id="quoteListContainer"></div>');
@@ -173,41 +175,28 @@ rhit.DetailPageController = class {
 	updateView() {
 		document.querySelector("#cardQuote").innerHTML = rhit.fbSingleQuoteManager.quote;
 		document.querySelector("#cardMovie").innerHTML = rhit.fbSingleQuoteManager.movie;
-
 		this.updatePoster();
-		console.log("done updating the poster")
 	}
 
-	async updatePoster() {
-		console.log("Adding the poster image");
-		let apikey = "691ddc11";
-		// let apikey = "194cb371";
-		let url = `//www.omdbapi.com/?apikey=${apikey}&t=${rhit.fbSingleQuoteManager.movie}`;
-		// let url = `//img.omdbapi.com/?apikey=${apikey}&t=${rhit.fbSingleQuoteManager.movie}`;
-		console.log(`Sending request to ${url}`);
-		// fetch(url).then((response) => {
-		// 	return response.json();
-		// }).then((data) => {
-
-			let response = await fetch(url);
-			let data = await response.json();
-
-			console.log("Using a double await", data);
-
-			console.log('data["Response"] :>> ', data["Response"]);
-			let isSuccessful = data["Response"] == "True";
+	updatePoster() {
+		let url = `//www.omdbapi.com/?apikey=691ddc11&t=${rhit.fbSingleQuoteManager.movie}`;
+		console.log(`Do a fetch for url: ${url}`);
+		fetch(url).then((response) => {
+			console.log(response);
+			return response.json();
+		}).then(  (data) => {
+			console.log(data);
+			let isSuccess = data["Response"] == "True";
 			let posterUrl = data["Poster"];
-			console.log('isSussessful :>> ', isSuccessful);
-			console.log('posterUrl :>> ', posterUrl);
-
-			let posterImgEl = document.querySelector("#cardPoster")
-			if (isSuccessful && posterUrl.length > 5) {
+			let posterImgEl = document.querySelector("#cardPoster");
+			if (isSuccess && posterUrl.length > 5) {
 				posterImgEl.src = posterUrl;
 				posterImgEl.style.display = "flex";
 			} else {
 				posterImgEl.style.display = "none";
 			}
-		// });
+		});
+		console.log("This prints before the fetch returns");
 	}
 }
 
