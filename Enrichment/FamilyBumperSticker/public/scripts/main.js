@@ -34,8 +34,6 @@ rhit.ListPageController = class {
 			// Optional...
 			document.querySelector("#nameInput").value = "";
 			document.querySelector("#pictureInput").value = "";
-
-
 		});
 
 		// // Start listening!
@@ -44,17 +42,6 @@ rhit.ListPageController = class {
 
 
 	updateList() {
-		console.log("I need to update the list on the page!");
-		console.log(`Num family members = ${rhit.fbFamilyMembersCollectionManager.length}`);
-
-		// if (rhit.fbFamilyMembersCollectionManager.length > 0) {
-		// 	const fm = rhit.fbFamilyMembersCollectionManager.getFamilyMemberAtIndex(0);
-		// 	console.log("Example family members = ", fm);
-		// 	console.log(fm.name);
-		// 	console.log(fm.imgUrl);
-		// }
-
-
 		// Make a new familyList
 		const newList = htmlToElement('<div id="familyList" class="row justify-content-center"></div>');
 		// Fill the familyList with family member elements using a loop
@@ -62,7 +49,8 @@ rhit.ListPageController = class {
 			const fm = rhit.fbFamilyMembersCollectionManager.getFamilyMemberAtIndex(i);
 			const newCard = this._createCard(fm);
 			newCard.onclick = (event) => {
-				console.log(`You clicked on ${fm.name}`);				
+				console.log(`You clicked on ${fm.name}`);
+				rhit.fbFamilyMembersCollectionManager.delete(fm.id);
 			};
 			newList.appendChild(newCard);
 		}
@@ -113,9 +101,6 @@ rhit.FbFamilyMembersCollectionManager = class {
 			.onSnapshot((querySnapshot) => {
 				console.log("FamilyMember update!");
 				this._documentSnapshots = querySnapshot.docs;
-				querySnapshot.forEach((doc) => {
-					console.log(doc.data());
-				});
 				changeListener();
 			});
 	}
@@ -125,7 +110,7 @@ rhit.FbFamilyMembersCollectionManager = class {
 	}
 
 	delete(id) {
-		console.log("TODO: Implement Delete!!!!");
+		this._ref.doc(id).delete();
 	}
 
 	get length() {
