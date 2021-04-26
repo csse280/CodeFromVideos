@@ -33,7 +33,7 @@ rhit.ListPageController = class {
 
 			// Optional...
 			document.querySelector("#nameInput").value = "";
-			document.querySelector("#pictureInput").value = "";
+			document.querySelector("#pictureInput").selectedIndex = 0;
 		});
 
 		// // Start listening!
