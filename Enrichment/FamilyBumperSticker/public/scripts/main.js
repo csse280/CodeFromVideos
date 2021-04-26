@@ -45,40 +45,42 @@ rhit.ListPageController = class {
 
 	updateList() {
 		console.log("I need to update the list on the page!");
-	// 	console.log(`Num quotes = ${rhit.fbMovieQuotesManager.length}`);
-	// 	// console.log("Example quote = ", rhit.fbMovieQuotesManager.getMovieQuoteAtIndex(0));
+		console.log(`Num family members = ${rhit.fbFamilyMembersCollectionManager.length}`);
 
-	// 	// Make a new quoteListContainer
-	// 	const newList = htmlToElement('<div id="quoteListContainer"></div>');
-	// 	// Fill the quoteListContainer with quote cards using a loop
-	// 	for (let i = 0; i < rhit.fbMovieQuotesManager.length; i++) {
-	// 		const mq = rhit.fbMovieQuotesManager.getMovieQuoteAtIndex(i);
-	// 		const newCard = this._createCard(mq);
-	// 		newCard.onclick = (event) => {
-	// 			//console.log(`You clicked on ${mq.id}`);
-	// 			// rhit.storage.setMovieQuoteId(mq.id);
-	// 			window.location.href = `/moviequote.html?id=${mq.id}`;
-	// 		};
-	// 		newList.appendChild(newCard);
-	// 	}
+		// if (rhit.fbFamilyMembersCollectionManager.length > 0) {
+		// 	const fm = rhit.fbFamilyMembersCollectionManager.getFamilyMemberAtIndex(0);
+		// 	console.log("Example family members = ", fm);
+		// 	console.log(fm.name);
+		// 	console.log(fm.imgUrl);
+		// }
 
 
-	// 	// Remove the old quoteListContainer
-	// 	const oldList = document.querySelector("#quoteListContainer");
-	// 	oldList.removeAttribute("id");
-	// 	oldList.hidden = true;
-	// 	// Put in the new quoteListContainer
-	// 	oldList.parentElement.appendChild(newList);
+		// Make a new familyList
+		const newList = htmlToElement('<div id="familyList" class="row justify-content-center"></div>');
+		// Fill the familyList with family member elements using a loop
+		for (let i = 0; i < rhit.fbFamilyMembersCollectionManager.length; i++) {
+			const fm = rhit.fbFamilyMembersCollectionManager.getFamilyMemberAtIndex(i);
+			const newCard = this._createCard(fm);
+			newCard.onclick = (event) => {
+				console.log(`You clicked on ${fm.name}`);				
+			};
+			newList.appendChild(newCard);
+		}
+
+		// Remove the old familyList
+		const oldList = document.querySelector("#familyList");
+		oldList.removeAttribute("id");
+		oldList.hidden = true;
+		// Put in the new familyList
+		oldList.parentElement.appendChild(newList);
 	}
 
-	// _createCard(movieQuote) {
-	// 	return htmlToElement(`<div class="card">
-	// 	<div class="card-body">
-	// 		<h5 class="card-title">${movieQuote.quote}</h5>
-	// 		<h6 class="card-subtitle mb-2 text-muted">${movieQuote.movie}</h6>
-	// 	</div>
-	// </div>`);
-	// }
+	_createCard(familyMember) {
+		return htmlToElement(`<div class="col-3 col-md-2">
+		<img src="${familyMember.imgUrl}" class="img-fluid" alt="${familyMember.name}">
+		<div class="text-center">${familyMember.name}</div>
+	</div>`);
+	}
 
 }
 
