@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+  <link rel="stylesheet" href="styles/bootstrap-material-design.min.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <title>Family</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-dark fixed-top">
+    <a class="navbar-brand" href="#">Family Bumper Sticker</a>
+  </nav>
+  <div id="mainPage" class="container page-container">
+    <div class="row justify-content-center">
+      <div class="jumbotron col-11 col-sm-10 col-md-8">
+        <h1 class="d-none d-sm-block display-5">Family Members</h1>
+        <div class="form-group row">
+          <label class="col-2 mt-1" for="nameInput">Name:</label>
+          <div class="col-10 px-4">
+            <input type="text" class="form-control" id="nameInput" aria-describedby="name input"
+              placeholder="Name of someone in your family">
+          </div>
+
+        </div>
+        <div class="form-group row">
+          <label class="col-2 mt-1" for="pictureInput">Picture:</label>
+          <div class="col-10 px-4">
+            <select id="pictureInput" class="custom-select">
+              <option selected>Photo for this person</option>
+              <option value="images/dad.jpg">Dad image</option>
+              <option value="images/mom.jpg">Mom image</option>
+              <option value="images/boy.jpg">Boy image</option>
+              <option value="images/girl.jpg">Girl image</option>
+              <option value="images/baby.jpg">Baby image</option>
+              <option value="images/dog.jpg">Dog image</option>
+              <option value="images/cat.jpg">Cat image</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <button id="submit" type="submit" class="mr-4 btn btn-primary ml-auto">Submit</button>
+        </div>
+      </div>
+    </div>
+    <div id="familyListContainer">
+      <!-- <div id="familyList" class="row justify-content-center">
+        <div class="col-3 col-md-2">
+          <img src="images/dad.jpg" class="img-fluid" alt="Dave">
+          <div class="text-center">Dave</div>
+        </div>
+        <div class="col-3 col-md-2">
+          <img src="images/mom.jpg" class="img-fluid" alt="Kristy">
+          <div class="text-center">Kristy</div>
+        </div>
+        <div class="col-3 col-md-2">
+          <img src="images/girl.jpg" class="img-fluid" alt="McKinley">
+          <div class="text-center">McKinley</div>
+        </div>
+        <div class="col-3 col-md-2">
+          <img src="images/boy.jpg" class="img-fluid" alt="Keegan">
+          <div class="text-center">Keegan</div>
+        </div>
+        <div class="col-3 col-md-2">
+          <img src="images/boy.jpg" class="img-fluid" alt="Bowen">
+          <div class="text-center">Bowen</div>
+        </div>
+        <div class="col-3 col-md-2">
+          <img src="images/girl.jpg" class="img-fluid" alt="Neala">
+          <div class="text-center">Neala</div>
+        </div>
+        <div class="col-3 col-md-2">
+          <img src="images/dog.jpg" class="img-fluid" alt="Kingsley">
+          <div class="text-center">Kingsley</div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+  <script src="scripts/jquery.min.js"></script>
+  <script src="scripts/popper.js"></script>
+  <script src="scripts/bootstrap-material-design.js"></script>
+  <script>
+    $("body").bootstrapMaterialDesign();
+  </script>
+  <script src="/__/firebase/8.2.3/firebase-app.js"></script>
+  <script src="/__/firebase/8.2.3/firebase-analytics.js"></script>
+  <script src="/__/firebase/8.2.3/firebase-firestore.js"></script>
+  <script src="/__/firebase/init.js"></script>
+  <script src="scripts/main.js"></script>
+</body>
+
+</html>
