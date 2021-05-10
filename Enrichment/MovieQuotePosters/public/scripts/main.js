@@ -176,29 +176,45 @@ rhit.DetailPageController = class {
 		document.querySelector("#cardQuote").innerHTML = rhit.fbSingleQuoteManager.quote;
 		document.querySelector("#cardMovie").innerHTML = rhit.fbSingleQuoteManager.movie;
 		this.updatePoster();
+		console.log("This happen WAY before poster stuff finishes");
 	}
 
-	updatePoster() {
+	async updatePoster() {
 		const title = rhit.fbSingleQuoteManager.movie;
 		console.log(`TODO: Use OMBD API to find the movie poster for ${title}`);
 
+		const response = await fetch(`//www.omdbapi.com/?apikey=691ddc11&t=${title}`);
+		const data = await response.json();
 
-		fetch(`//www.omdbapi.com/?apikey=691ddc11&t=${title}`)
-		.then(response => response.json())
-		.then(data => {
-			console.log('Response data:', data);
+		console.log('Response data:', data);
+		if (data["Response"] == "True" && data["Poster"].length > 5) {
+			console.log("Show the poster in the HTML!");
+			const posterUrl = data["Poster"];
+			const posterImgEl = document.querySelector("#cardPoster");
+			posterImgEl.src = posterUrl;
+			posterImgEl.alt = title;
+			posterImgEl.style.display = "flex";
+		} else {
+			console.log("Missing poster data.  Do nothing.");
+		}
 
-			if (data["Response"] == "True" && data["Poster"].length > 5) {
-				console.log("Show the poster in the HTML!");
-				const posterUrl = data["Poster"];
-				const posterImgEl = document.querySelector("#cardPoster");
-				posterImgEl.src = posterUrl;
-				posterImgEl.alt = title;
-				posterImgEl.style.display = "flex";
-			} else {
-				console.log("Missing poster data.  Do nothing.");
-			}
-		});
+
+		// fetch(`//www.omdbapi.com/?apikey=691ddc11&t=${title}`)
+		// .then(response => response.json())
+		// .then(data => {
+		// 	console.log('Response data:', data);
+
+		// 	if (data["Response"] == "True" && data["Poster"].length > 5) {
+		// 		console.log("Show the poster in the HTML!");
+		// 		const posterUrl = data["Poster"];
+		// 		const posterImgEl = document.querySelector("#cardPoster");
+		// 		posterImgEl.src = posterUrl;
+		// 		posterImgEl.alt = title;
+		// 		posterImgEl.style.display = "flex";
+		// 	} else {
+		// 		console.log("Missing poster data.  Do nothing.");
+		// 	}
+		// });
 
 	}
 }
