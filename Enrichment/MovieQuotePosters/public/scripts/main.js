@@ -183,9 +183,9 @@ rhit.DetailPageController = class {
 		console.log(`TODO: Use OMBD API to find the movie poster for ${title}`);
 
 
-		fetch(`//www.omdbapi.com/?apikey=691ddc11&t=${title}`).then((response) => {
-			return response.json();
-		}).then((data) => {
+		fetch(`//www.omdbapi.com/?apikey=691ddc11&t=${title}`)
+		.then(response => response.json())
+		.then(data => {
 			console.log('Response data:', data);
 
 			if (data["Response"] == "True" && data["Poster"].length > 5) {
