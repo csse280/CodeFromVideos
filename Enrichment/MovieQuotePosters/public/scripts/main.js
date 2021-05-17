@@ -181,17 +181,12 @@ rhit.DetailPageController = class {
 
 	async updatePoster() {
 		const title = rhit.fbSingleQuoteManager.movie;
-		console.log(`TODO: Use OMBD API to find the movie poster for ${title}`);
-
 		const response = await fetch(`//www.omdbapi.com/?apikey=691ddc11&t=${title}`);
 		const data = await response.json();
-
 		console.log('Response data:', data);
 		if (data["Response"] == "True" && data["Poster"].length > 5) {
-			console.log("Show the poster in the HTML!");
-			const posterUrl = data["Poster"];
 			const posterImgEl = document.querySelector("#cardPoster");
-			posterImgEl.src = posterUrl;
+			posterImgEl.src = data["Poster"];
 			posterImgEl.alt = title;
 			posterImgEl.style.display = "flex";
 		} else {
@@ -204,6 +199,8 @@ rhit.DetailPageController = class {
 		// .then(data => {
 		// 	console.log('Response data:', data);
 
+		// 	// the API returns "True" or "False" to indicate success
+		// 	// there is a chance there will be no url for a poster, then it lists "N/A"
 		// 	if (data["Response"] == "True" && data["Poster"].length > 5) {
 		// 		console.log("Show the poster in the HTML!");
 		// 		const posterUrl = data["Poster"];
