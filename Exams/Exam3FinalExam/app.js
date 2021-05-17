@@ -28,8 +28,9 @@ function saveToServer(data) {
 app.use('/', express.static("public") );
 
 //middleware
-var bodyParser = require("body-parser");
-app.use('/api/', bodyParser.json() );
+// var bodyParser = require("body-parser");
+// app.use('/api/', bodyParser.json() );
+app.use('/api/', express.json());
 
 //READ ALL
 // app.get("/api/", function (req, res) {

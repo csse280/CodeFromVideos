@@ -11,9 +11,11 @@ app.use( logger('dev') ); //helpful information serverside when requests come in
 
 
 //middleware
-var bodyParser = require("body-parser");
-app.use('/api/', bodyParser.urlencoded( {extended: true}));
-app.use('/api/', bodyParser.json() );
+// var bodyParser = require("body-parser");
+// app.use('/api/', bodyParser.urlencoded( {extended: true}));
+// app.use('/api/', bodyParser.json() );
+
+app.use('/api/', express.json());
 
 //READ ALL
 app.get("/api/", function (req, res) {

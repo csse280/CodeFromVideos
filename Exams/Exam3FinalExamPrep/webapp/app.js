@@ -28,8 +28,12 @@ function saveToServer(data) {
 app.use('/', express.static("public"));
 
 //middleware
-var bodyParser = require("body-parser");
-app.use('/api/', bodyParser.json());
+// Instead of using
+// var bodyParser = require("body-parser");
+// app.use('/api/', bodyParser.json());
+
+// Use...
+app.use('/api/', express.json());
 
 // Pass in an array with 4 values to set all the Pars
 app.put("/api/pars", function (req, res) {
