@@ -76,6 +76,20 @@ app.put("/api/score/:hole", function (req, res) {
 
 
 
+
+app.get("/api/pars", function (req, res) {
+    res.json({
+        "pars": data["pars"]
+    })
+});
+
+app.get("/api/scores", function (req, res) {
+    res.json({
+        "scores": data["scores"]
+    })
+});
+
+
 //READ ALL
 // app.get("/api/", function (req, res) {
 //     res.send( data );
